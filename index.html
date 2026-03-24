@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFL — Observatoire national des laveries</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1B3A6B;--blue-mid:#2B5BA8;--blue-light:#E8EFF9;--taupe:#C4A882;--taupe-light:#F5F0E8;--white:#FAFAF8;--text:#1a1a1a;--muted:#6b7280;--border:#dde3ee;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--white);font-family:'DM Sans',sans-serif;color:var(--text);min-height:100vh;}
+.header-stripe{height:5px;background:linear-gradient(90deg,var(--taupe),#d4b896,var(--taupe));}
+header{background:var(--blue);}
+.header-inner{max-width:740px;margin:0 auto;padding:36px 24px 44px;}
+.afl-badge{display:inline-flex;align-items:center;margin-bottom:20px;}
+.afl-logo-img{height:68px;width:auto;object-fit:contain;}
+header h1{font-family:'DM Serif Display',serif;font-size:clamp(24px,4vw,36px);color:#fff;line-height:1.2;margin-bottom:12px;}
+header h1 em{color:var(--taupe);font-style:italic;}
+.header-sub{font-size:14px;color:rgba(255,255,255,.72);}
+.header-meta{margin-top:22px;display:flex;gap:12px;flex-wrap:wrap;}
+.meta-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:5px 13px;font-size:12px;color:rgba(255,255,255,.82);}
+.wrap{max-width:740px;margin:0 auto;padding:40px 24px 80px;}
+.anon-notice{background:var(--taupe-light);border-left:3px solid var(--taupe);border-radius:0 8px 8px 0;padding:13px 17px;margin-bottom:36px;font-size:13.5px;color:#5a4a35;line-height:1.5;}
+.anon-notice strong{color:#3d3020;}
+.screen{display:none;}
+.screen.active{display:block;animation:fadeUp .4s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.gate-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--blue);margin-bottom:8px;}
+.gate-sub{font-size:14px;color:var(--muted);margin-bottom:28px;}
+.choice-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:560px){.choice-cards{grid-template-columns:1fr;}}
+.choice-card{border:2px solid var(--border);border-radius:12px;padding:24px 18px 20px;cursor:pointer;transition:all .2s;background:#fff;text-align:center;user-select:none;}
+.choice-card:hover{border-color:var(--blue-mid);background:var(--blue-light);transform:translateY(-2px);box-shadow:0 6px 20px rgba(27,58,107,.12);}
+.card-icon{display:flex;align-items:center;justify-content:center;margin-bottom:12px;height:36px;}
+.card-num{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);font-weight:700;margin-bottom:6px;}
+.card-label{font-size:13px;color:var(--muted);line-height:1.4;}
+.card-badge{display:inline-block;margin-top:12px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;}
+.badge-form{background:var(--blue-light);color:var(--blue);}
+.badge-sheet{background:var(--taupe-light);color:#6b4c1e;}
+.progress-bar{height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--taupe));border-radius:2px;width:0%;transition:width .4s ease;}
+.section{margin-bottom:40px;}
+.section-label{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.section-num{width:27px;height:27px;background:var(--blue);color:#fff;border-radius:50%;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.section-title{font-size:15px;font-weight:600;color:var(--blue);}
+.field{margin-bottom:16px;}
+label{display:block;font-size:13.5px;font-weight:500;margin-bottom:6px;}
+label .opt{font-weight:400;color:var(--muted);font-size:12px;margin-left:4px;}
+input[type=number],input[type=text],select{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:#fff;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none;}
+input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 0 0 3px rgba(43,91,168,.11);}
+.sel-wrap{position:relative;}
+.sel-wrap::after{content:'\25BE';position:absolute;right:13px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;font-size:12px;}
+.region-display{padding:10px 13px;border:1.5px solid var(--border);border-radius:8px;background:#f8f9fc;font-size:14px;color:var(--muted);min-height:42px;display:flex;align-items:center;}
+.region-display.filled{color:var(--blue);font-weight:500;background:var(--blue-light);border-color:var(--blue-mid);}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;}
+.grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:13px;}
+@media(max-width:560px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr;}}
+.radio-cards{display:grid;gap:9px;}
+.radio-cards.c2{grid-template-columns:1fr 1fr;}
+.radio-cards.c3{grid-template-columns:1fr 1fr 1fr;}
+@media(max-width:520px){.radio-cards.c2,.radio-cards.c3{grid-template-columns:1fr 1fr;}}
+.rc input{display:none;}
+.rc label{display:flex;align-items:center;justify-content:center;text-align:center;padding:11px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:all .18s;background:#fff;line-height:1.3;}
+.rc input:checked+label{border-color:var(--blue-mid);background:var(--blue-light);color:var(--blue);}
+.rc label:hover{border-color:#a0b4d4;background:var(--blue-light);}
+.machine-block{background:var(--taupe-light);border-radius:10px;padding:16px 18px;margin-bottom:12px;}
+.machine-block-title{font-size:12px;font-weight:600;color:#6b5a3e;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;}
+.machine-block-sub{font-size:11.5px;color:#8a7560;margin-bottom:12px;font-style:italic;}
+.tarif-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;align-items:center;}
+.tarif-cap{font-size:13px;font-weight:500;color:var(--blue);padding:10px 0 10px 2px;}
+.hint{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.4;}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border) 20%,var(--border) 80%,transparent);margin:36px 0;}
+.download-box{border:2px solid var(--blue-light);border-radius:14px;padding:32px 28px;text-align:center;margin-bottom:28px;}
+.download-box h3{font-family:'DM Serif Display',serif;font-size:20px;color:var(--blue);margin-bottom:10px;}
+.download-box p{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:22px;max-width:420px;margin-left:auto;margin-right:auto;}
+.btn-dl{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;border:none;padding:13px 32px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s;}
+.btn-dl:hover{background:var(--blue-mid);transform:translateY(-1px);}
+.email-return{background:var(--taupe-light);border-radius:10px;padding:20px;}
+.email-return p{font-size:13.5px;color:#5a4a35;margin-bottom:8px;line-height:1.5;}
+.email-return strong{color:#3d3020;}
+.email-return a{color:var(--blue-mid);font-weight:600;}
+.submit-area{margin-top:44px;text-align:center;}
+.submit-note{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5;}
+.btn-submit{background:var(--blue);color:#fff;border:none;padding:15px 44px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s;box-shadow:0 4px 16px rgba(27,58,107,.25);}
+.btn-submit:hover{background:var(--blue-mid);transform:translateY(-1px);}
+.btn-back{background:transparent;border:1.5px solid var(--border);color:var(--muted);padding:12px 24px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;margin-right:12px;transition:all .2s;}
+.btn-back:hover{border-color:var(--blue);color:var(--blue);}
+.success-screen{display:none;text-align:center;padding:70px 24px;max-width:500px;margin:0 auto;}
+.success-icon{width:68px;height:68px;background:var(--blue-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-size:30px;}
+.success-screen h2{font-family:'DM Serif Display',serif;font-size:26px;color:var(--blue);margin-bottom:12px;}
+.success-screen p{color:var(--muted);font-size:14px;line-height:1.6;}
+.check-list{display:grid;gap:8px;margin-top:4px;}
+.check-list label{display:flex;align-items:center;gap:10px;font-weight:400;cursor:pointer;font-size:13.5px;}
+.check-list input[type=checkbox]{width:16px;height:16px;cursor:pointer;flex-shrink:0;}
+.nl-bloc{background:var(--blue);border-radius:12px;padding:28px 28px 24px;margin-bottom:36px;}
+.nl-eyebrow{font-size:11px;font-weight:600;color:var(--taupe);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+.nl-bloc h2{font-family:'DM Serif Display',serif;font-size:22px;color:#fff;margin-bottom:10px;line-height:1.3;}
+.nl-bloc h2 em{color:var(--taupe);font-style:italic;}
+.nl-bloc p{font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.6;margin-bottom:18px;}
+.nl-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.nl-stat{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:14px 12px;text-align:center;}
+.nl-stat .val{font-family:'DM Serif Display',serif;font-size:22px;color:var(--taupe);display:block;margin-bottom:4px;}
+.nl-stat .lbl{font-size:11px;color:rgba(255,255,255,.6);line-height:1.3;}
+.nl-note{font-size:11.5px;color:rgba(255,255,255,.45);font-style:italic;border-top:1px solid rgba(255,255,255,.1);padding-top:14px;line-height:1.5;}
+</style>
+<script src="afl.js" defer></script>
+</head>
+<body>
+<header>
+<div class="header-stripe"></div>
+<div class="header-inner">
+<div class="afl-badge"><img src="logo_afl.png" alt="AFL" class="afl-logo-img"></div>
+<h1>Votre laverie, <em>nos données communes</em></h1>
+<p class="header-sub">Premier observatoire national du secteur — confidentiel, rapide, utile pour tous les adhérents.</p>
+<div class="header-meta">
+<span class="meta-pill">⏱ 5 minutes</span>
+<span class="meta-pill">🔒 100 % anonyme</span>
+<span class="meta-pill">📊 Résultats partagés aux adhérents</span>
+</div>
+</div>
+</header>
+
+<div class="wrap">
+<div class="nl-bloc">
+<div class="nl-eyebrow">Pourquoi cette enquête ?</div>
+<h2>Un premier observatoire<br><em>construit par les exploitants</em></h2>
+<p>Dans la newsletter de mars 2025, l'AFL publie les premiers repères issus d'un échantillon de 56 laveries : tarifs médians par capacité, composition typique d'un parc, effet cumulatif des cycles. Plus nous serons nombreux à contribuer, plus ces données seront utiles à tous.</p>
+<div class="nl-stats">
+<div class="nl-stat"><span class="val">56</span><span class="lbl">laveries dans le premier échantillon</span></div>
+<div class="nl-stat"><span class="val">774</span><span class="lbl">laveuses analysées</span></div>
+<div class="nl-stat"><span class="val">5 min</span><span class="lbl">pour contribuer</span></div>
+</div>
+<p class="nl-note">Données anonymisées · Résultats sous forme agrégée · Réservés aux adhérents AFL · L'AFL ne fixe pas de normes : elle partage des repères.</p>
+</div>
+
+<div class="anon-notice"><strong>Confidentialité garantie.</strong> Aucune réponse ne permet d'identifier votre établissement. Les résultats sont publiés sous forme agrégée, réservés aux adhérents AFL.</div>
+
+<!-- GATE -->
+<div class="screen active" id="screen-gate">
+<p class="gate-title">Combien de laveries exploitez-vous ?</p>
+<p class="gate-sub">Nous adaptons le formulaire à votre situation.</p>
+<div class="choice-cards">
+<div class="choice-card" data-target="screen-solo"><div class="card-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">1</div><div class="card-label">Une seule laverie</div><div class="card-badge badge-form">Formulaire en ligne</div></div>
+<div class="choice-card" data-target="screen-multi"><div class="card-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">2 à 5</div><div class="card-label">Petit réseau</div><div class="card-badge badge-form">Formulaire simplifié</div></div>
+<div class="choice-card" data-target="screen-xl"><div class="card-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">6 et +</div><div class="card-label">Grand réseau</div><div class="card-badge badge-sheet">Tableur à importer</div></div>
+</div>
+</div>
+
+<!-- SOLO -->
+<div class="screen" id="screen-solo">
+<div class="progress-bar"><div class="progress-fill" id="pf-solo"></div></div>
+<form id="form-solo" novalidate>
+
+<!-- S1 : LOCALISATION -->
+<div class="section">
+<div class="section-label"><div class="section-num">1</div><span class="section-title">Localisation</span></div>
+<div class="grid-2">
+<div class="field">
+  <label>Département</label>
+  <div class="sel-wrap"><select name="dept" id="dept-solo" onchange="autofillRegion('dept-solo','region-solo')"><option value="">— Département —</option>
+<option value="01">01 – Ain</option>
+<option value="02">02 – Aisne</option>
+<option value="03">03 – Allier</option>
+<option value="04">04 – Alpes-de-Haute-Provence</option>
+<option value="05">05 – Hautes-Alpes</option>
+<option value="06">06 – Alpes-Maritimes</option>
+<option value="07">07 – Ardèche</option>
+<option value="08">08 – Ardennes</option>
+<option value="09">09 – Ariège</option>
+<option value="10">10 – Aube</option>
+<option value="11">11 – Aude</option>
+<option value="12">12 – Aveyron</option>
+<option value="13">13 – Bouches-du-Rhône</option>
+<option value="14">14 – Calvados</option>
+<option value="15">15 – Cantal</option>
+<option value="16">16 – Charente</option>
+<option value="17">17 – Charente-Maritime</option>
+<option value="18">18 – Cher</option>
+<option value="19">19 – Corrèze</option>
+<option value="2A">2A – Corse-du-Sud</option>
+<option value="2B">2B – Haute-Corse</option>
+<option value="21">21 – Côte-d'Or</option>
+<option value="22">22 – Côtes-d'Armor</option>
+<option value="23">23 – Creuse</option>
+<option value="24">24 – Dordogne</option>
+<option value="25">25 – Doubs</option>
+<option value="26">26 – Drôme</option>
+<option value="27">27 – Eure</option>
+<option value="28">28 – Eure-et-Loir</option>
+<option value="29">29 – Finistère</option>
+<option value="30">30 – Gard</option>
+<option value="31">31 – Haute-Garonne</option>
+<option value="32">32 – Gers</option>
+<option value="33">33 – Gironde</option>
+<option value="34">34 – Hérault</option>
+<option value="35">35 – Ille-et-Vilaine</option>
+<option value="36">36 – Indre</option>
+<option value="37">37 – Indre-et-Loire</option>
+<option value="38">38 – Isère</option>
+<option value="39">39 – Jura</option>
+<option value="40">40 – Landes</option>
+<option value="41">41 – Loir-et-Cher</option>
+<option value="42">42 – Loire</option>
+<option value="43">43 – Haute-Loire</option>
+<option value="44">44 – Loire-Atlantique</option>
+<option value="45">45 – Loiret</option>
+<option value="46">46 – Lot</option>
+<option value="47">47 – Lot-et-Garonne</option>
+<option value="48">48 – Lozère</option>
+<option value="49">49 – Maine-et-Loire</option>
+<option value="50">50 – Manche</option>
+<option value="51">51 – Marne</option>
+<option value="52">52 – Haute-Marne</option>
+<option value="53">53 – Mayenne</option>
+<option value="54">54 – Meurthe-et-Moselle</option>
+<option value="55">55 – Meuse</option>
+<option value="56">56 – Morbihan</option>
+<option value="57">57 – Moselle</option>
+<option value="58">58 – Nièvre</option>
+<option value="59">59 – Nord</option>
+<option value="60">60 – Oise</option>
+<option value="61">61 – Orne</option>
+<option value="62">62 – Pas-de-Calais</option>
+<option value="63">63 – Puy-de-Dôme</option>
+<option value="64">64 – Pyrénées-Atlantiques</option>
+<option value="65">65 – Hautes-Pyrénées</option>
+<option value="66">66 – Pyrénées-Orientales</option>
+<option value="67">67 – Bas-Rhin</option>
+<option value="68">68 – Haut-Rhin</option>
+<option value="69">69 – Rhône</option>
+<option value="70">70 – Haute-Saône</option>
+<option value="71">71 – Saône-et-Loire</option>
+<option value="72">72 – Sarthe</option>
+<option value="73">73 – Savoie</option>
+<option value="74">74 – Haute-Savoie</option>
+<option value="75">75 – Paris</option>
+<option value="76">76 – Seine-Maritime</option>
+<option value="77">77 – Seine-et-Marne</option>
+<option value="78">78 – Yvelines</option>
+<option value="79">79 – Deux-Sèvres</option>
+<option value="80">80 – Somme</option>
+<option value="81">81 – Tarn</option>
+<option value="82">82 – Tarn-et-Garonne</option>
+<option value="83">83 – Var</option>
+<option value="84">84 – Vaucluse</option>
+<option value="85">85 – Vendée</option>
+<option value="86">86 – Vienne</option>
+<option value="87">87 – Haute-Vienne</option>
+<option value="88">88 – Vosges</option>
+<option value="89">89 – Yonne</option>
+<option value="90">90 – Territoire de Belfort</option>
+<option value="91">91 – Essonne</option>
+<option value="92">92 – Hauts-de-Seine</option>
+<option value="93">93 – Seine-Saint-Denis</option>
+<option value="94">94 – Val-de-Marne</option>
+<option value="95">95 – Val-d'Oise</option>
+<option value="971">971 – Guadeloupe</option>
+<option value="972">972 – Martinique</option>
+<option value="973">973 – Guyane</option>
+<option value="974">974 – La Réunion</option>
+<option value="976">976 – Mayotte</option>
+</select></div>
+</div>
+<div class="field">
+  <label>Région <span class="opt">remplie automatiquement</span></label>
+  <div class="region-display" id="region-solo">—</div>
+  <input type="hidden" name="region" id="region-solo-val">
+</div>
+</div>
+<div class="grid-2">
+<div class="field">
+  <label>Type de zone</label>
+  <div class="sel-wrap"><select name="zone"><option value="">— Sélectionner —</option><option value="centre_dense">Centre-ville dense</option><option value="periurbain">Périurbain / banlieue</option><option value="zone_comm">Zone commerciale</option><option value="residentiel">Quartier résidentiel</option><option value="rural">Zone rurale</option><option value="autre">Autre</option></select></div>
+</div>
+<div class="field">
+  <label>Surface <span class="opt">(m², approx.)</span></label>
+  <input type="number" name="surface" min="10" max="500" placeholder="ex. 80">
+</div>
+</div>
+</div>
+<div class="divider"></div>
+
+<!-- S2 : PARC & TARIFS -->
+<div class="section">
+<div class="section-label"><div class="section-num">2</div><span class="section-title">Parc machines &amp; tarifs pratiqués</span></div>
+<div class="machine-block">
+  <div class="machine-block-title">Laveuses — nombre de machines et tarif par cycle</div>
+  <div class="machine-block-sub">Indiquez 0 si vous n'avez pas cette capacité. Tarif = prix affiché en €.</div>
+  <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:8px;">
+    <div style="font-size:12px;font-weight:600;color:#6b5a3e;text-transform:uppercase;letter-spacing:.5px;">Capacité</div>
+    <div style="font-size:12px;font-weight:600;color:#6b5a3e;text-transform:uppercase;letter-spacing:.5px;text-align:center;">Nb machines</div>
+    <div style="font-size:12px;font-weight:600;color:#6b5a3e;text-transform:uppercase;letter-spacing:.5px;text-align:center;">Tarif (€)</div>
+  </div>
+  <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;">
+    <div style="font-size:13.5px;font-weight:500;color:var(--blue);">5 – 6 kg</div>
+    <input type="number" name="nb_m5" min="0" max="30" placeholder="0" style="text-align:center;">
+    <input type="number" name="tarif_m5" min="0" max="20" step="0.10" placeholder="ex. 4,50" style="text-align:center;">
+  </div>
+  <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;">
+    <div style="font-size:13.5px;font-weight:500;color:var(--blue);">7 – 8 kg</div>
+    <input type="number" name="nb_m7" min="0" max="30" placeholder="0" style="text-align:center;">
+    <input type="number" name="tarif_m7" min="0" max="20" step="0.10" placeholder="ex. 5,00" style="text-align:center;">
+  </div>
+  <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;">
+    <div style="font-size:13.5px;font-weight:500;color:var(--blue);">9 – 10 kg</div>
+    <input type="number" name="nb_m10" min="0" max="30" placeholder="0" style="text-align:center;">
+    <input type="number" name="tarif_m10" min="0" max="25" step="0.10" placeholder="ex. 7,50" style="text-align:center;">
+  </div>
+  <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;">
+    <div style="font-size:13.5px;font-weight:500;color:var(--blue);">12 – 14 kg</div>
+    <input type="number" name="nb_m14" min="0" max="20" placeholder="0" style="text-align:center;">
+    <input type="number" name="tarif_m14" min="0" max="30" step="0.10" placeholder="ex. 9,00" style="text-align:center;">
+  </div>
+  <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;">
+    <div style="font-size:13.5px;font-weight:500;color:var(--blue);">16 – 20 kg</div>
+    <input type="number" name="nb_m16" min="0" max="20" placeholder="0" style="text-align:center;">
+    <input type="number" name="tarif_m16" min="0" max="35" step="0.10" placeholder="ex. 10,00" style="text-align:center;">
+  </div>
+</div>
+<div class="machine-block">
+  <div class="machine-block-title">Sèche-linge</div>
+  <div class="grid-3">
+    <div class="field"><label>8 – 9 kg</label><input type="number" name="s8" min="0" max="20" placeholder="0"></div>
+    <div class="field"><label>13 kg</label><input type="number" name="s13" min="0" max="20" placeholder="0"></div>
+    <div class="field"><label>Autre</label><input type="number" name="sautre" min="0" max="20" placeholder="0"></div>
+  </div>
+</div>
+<div class="field"><label>Ancienneté du parc principal</label><div class="sel-wrap"><select name="anc_parc"><option value="">— Sélectionner —</option><option>Moins de 3 ans</option><option>3 à 7 ans</option><option>7 à 12 ans</option><option>Plus de 12 ans</option></select></div></div>
+</div>
+<div class="divider"></div>
+
+<!-- S3 : ACTIVITÉ -->
+<div class="section">
+<div class="section-label"><div class="section-num">3</div><span class="section-title">Activité</span></div>
+<div class="grid-2">
+<div class="field">
+  <label>Cycles moyens / machine / jour <span class="opt">toutes capacités confondues</span></label>
+  <input type="number" name="cycles_global" min="0" max="30" step="0.5" placeholder="ex. 4">
+  <p class="hint">Estimation sur un mois courant, hors vacances scolaires si atypique.</p>
+</div>
+<div class="field">
+  <label>Amplitude horaire d'ouverture</label>
+  <div class="sel-wrap"><select name="amplitude"><option value="">— Sélectionner —</option><option>Moins de 12h / jour</option><option>12h à 16h / jour</option><option>16h à 20h / jour</option><option>24h / 24</option></select></div>
+</div>
+</div>
+<div class="field"><label>Répartition de l'activité</label>
+<div class="radio-cards c3">
+<div class="rc"><input type="radio" name="rep" id="r1" value="semaine"><label for="r1">Semaine dominante</label></div>
+<div class="rc"><input type="radio" name="rep" id="r2" value="equilibre"><label for="r2">Équilibré</label></div>
+<div class="rc"><input type="radio" name="rep" id="r3" value="weekend"><label for="r3">Week-end dominant</label></div>
+</div></div>
+<div class="field">
+  <label>Taux d'immobilisation moyen — ensemble du parc (12 derniers mois)</label>
+  <p class="hint" style="margin-bottom:8px;">Proportion du temps où au moins une machine est indisponible pour panne ou maintenance. La moyenne nationale observée se situe entre 10 et 20 %.</p>
+  <div class="radio-cards c2">
+    <div class="rc"><input type="radio" name="immo" id="i1" value="lt5"><label for="i1">Moins de 5 %</label></div>
+    <div class="rc"><input type="radio" name="immo" id="i2" value="5-10"><label for="i2">5 à 10 %</label></div>
+    <div class="rc"><input type="radio" name="immo" id="i3" value="10-20"><label for="i3">10 à 20 %</label></div>
+    <div class="rc"><input type="radio" name="immo" id="i4" value="gt20"><label for="i4">Plus de 20 %</label></div>
+  </div>
+</div>
+</div>
+<div class="divider"></div>
+
+<!-- S4 : EXPLOITATION -->
+<div class="section">
+<div class="section-label"><div class="section-num">4</div><span class="section-title">Exploitation</span></div>
+<div class="grid-2">
+<div class="field"><label>Présence humaine</label><div class="sel-wrap"><select name="presence"><option value="">— Sélectionner —</option><option>Gardien permanent</option><option>Passage régulier</option><option>Télésurveillance uniquement</option><option>Sans surveillance</option></select></div></div>
+<div class="field"><label>Mode de paiement principal</label><div class="sel-wrap"><select name="paiement"><option value="">— Sélectionner —</option><option>Pièces uniquement</option><option>CB / sans contact</option><option>Application mobile</option><option>Mixte pièces + CB</option><option>Mixte pièces + application</option></select></div></div>
+</div>
+<div class="grid-2">
+<div class="field"><label>Alimentation eau chaude</label><div class="sel-wrap"><select name="eau"><option value="">— Sélectionner —</option><option>Réseau (sans résistances)</option><option>Résistances électriques</option><option>Mixte</option></select></div></div>
+<div class="field"><label>Système de gestion à distance</label><div class="sel-wrap"><select name="telemetrie"><option value="">— Sélectionner —</option><option>Oui, connecté</option><option>Non</option><option>En cours d'installation</option></select></div></div>
+</div>
+<div class="field"><label>Distributeur lessive / adoucissant en salle</label>
+<div class="radio-cards c3">
+<div class="rc"><input type="radio" name="distrib" id="d1" value="lessive_adoucissant"><label for="d1">Lessive + adoucissant</label></div>
+<div class="rc"><input type="radio" name="distrib" id="d2" value="lessive_seul"><label for="d2">Lessive uniquement</label></div>
+<div class="rc"><input type="radio" name="distrib" id="d3" value="aucun"><label for="d3">Aucun</label></div>
+</div></div>
+<div class="field"><label>Votre ancienneté dans le métier</label>
+<div class="radio-cards c2">
+<div class="rc"><input type="radio" name="anc_met" id="a1" value="lt3"><label for="a1">Moins de 3 ans</label></div>
+<div class="rc"><input type="radio" name="anc_met" id="a2" value="3-10"><label for="a2">3 à 10 ans</label></div>
+<div class="rc"><input type="radio" name="anc_met" id="a3" value="10-20"><label for="a3">10 à 20 ans</label></div>
+<div class="rc"><input type="radio" name="anc_met" id="a4" value="gt20"><label for="a4">Plus de 20 ans</label></div>
+</div></div>
+</div>
+<div class="divider"></div>
+
+<!-- S5 : ATTENTES -->
+<div class="section">
+<div class="section-label"><div class="section-num">5</div><span class="section-title">Ce qui vous serait utile</span></div>
+<div class="check-list">
+<label><input type="checkbox" name="interet" value="cycles"> Cycles / machine / jour par zone géographique</label>
+<label><input type="checkbox" name="interet" value="tarifs"> Fourchettes tarifaires par capacité et par région</label>
+<label><input type="checkbox" name="interet" value="pannes"> Taux de panne par marque / modèle</label>
+<label><input type="checkbox" name="interet" value="parc"> Composition type d'un parc selon la surface</label>
+<label><input type="checkbox" name="interet" value="energie"> Consommation énergétique comparée</label>
+<label><input type="checkbox" name="interet" value="paiement"> Évolution des modes de paiement</label>
+</div>
+</div>
+
+<div class="submit-area">
+<p class="submit-note">Réponses transmises anonymement — résultats publiés dans la newsletter AFL.</p>
+<button type="button" class="btn-back" data-back="screen-gate">← Retour</button>
+<button type="submit" class="btn-submit">Envoyer mes réponses →</button>
+</div>
+</form>
+</div>
+
+<!-- MULTI 2-5 -->
+<div class="screen" id="screen-multi">
+<div class="progress-bar"><div class="progress-fill" id="pf-multi"></div></div>
+<form id="form-multi" novalidate>
+<div class="section">
+<div class="section-label"><div class="section-num">·</div><span class="section-title">Votre profil</span></div>
+<div class="grid-2">
+<div class="field"><label>Nombre de laveries exploitées</label><input type="number" name="nb_sites" min="2" max="5" placeholder="ex. 3"></div>
+<div class="field"><label>Votre ancienneté dans le métier</label><div class="sel-wrap"><select name="anc_met_m"><option value="">— Sélectionner —</option><option>Moins de 3 ans</option><option>3 à 10 ans</option><option>10 à 20 ans</option><option>Plus de 20 ans</option></select></div></div>
+</div></div>
+<div class="divider"></div>
+<div class="section">
+<div class="section-label"><div class="section-num">→</div><span class="section-title">Renseignez chaque laverie</span></div>
+<p class="hint" style="margin-bottom:18px;font-size:13px;">Données approximatives bienvenues. L'objectif est d'obtenir des tendances, pas des chiffres exacts.</p>
+<div id="sites-container"></div>
+<button type="button" class="add-site-btn" id="btn-add-site">+ Ajouter une laverie</button>
+</div>
+<div class="section">
+<div class="section-label"><div class="section-num">·</div><span class="section-title">Ce qui vous serait utile</span></div>
+<div class="check-list">
+<label><input type="checkbox" name="int_m" value="cycles"> Cycles / machine / jour par zone</label>
+<label><input type="checkbox" name="int_m" value="tarifs"> Fourchettes tarifaires par capacité</label>
+<label><input type="checkbox" name="int_m" value="pannes"> Taux de panne par marque</label>
+<label><input type="checkbox" name="int_m" value="energie"> Consommation énergétique comparée</label>
+</div></div>
+<div class="submit-area">
+<p class="submit-note">Réponses transmises anonymement.</p>
+<button type="button" class="btn-back" data-back="screen-gate">← Retour</button>
+<button type="submit" class="btn-submit">Envoyer mes réponses →</button>
+</div>
+</form>
+</div>
+
+<!-- XL 6+ -->
+<div class="screen" id="screen-xl">
+<div class="download-box">
+<h3>Téléchargez le tableur AFL</h3>
+<p>Remplissez une ligne par laverie. Listes déroulantes, calculs automatiques — une seule feuille à compléter.</p>
+<a href="AFL_Observatoire_2025.xlsx" download class="btn-dl">⬇ Télécharger le tableur (.xlsx)</a>
+</div>
+<div class="email-return">
+<p><strong>Renvoyez le fichier complété à :</strong><br><a href="/cdn-cgi/l/email-protection#91f0f7fdbffdf0e7f4e3f8f4e2d1f6fcf0f8fdbff2fefc"><span class="__cf_email__" data-cfemail="8eefe8e2a0e2eff8ebfce7ebfdcee9e3efe7e2a0ede1e3">[email&#160;protected]</span></a></p>
+<p style="margin-top:8px;">Objet suggéré : <em>Observatoire AFL 2025 — [votre nom ou code réseau]</em></p>
+<p style="margin-top:10px;font-size:12px;color:#7a6a50;">Votre nom dans l'objet est utilisé uniquement pour accuser réception — il ne sera pas associé aux données transmises.</p>
+</div>
+<div style="margin-top:24px;text-align:center;">
+<button type="button" class="btn-back" data-back="screen-gate">← Retour</button>
+</div>
+</div>
+
+<!-- SUCCESS -->
+<div class="success-screen" id="success">
+<div class="success-icon">✓</div>
+<h2>Merci pour votre contribution</h2>
+<p>Vos réponses ont été transmises de façon anonyme.<br>Les résultats seront partagés avec tous les adhérents AFL dans la prochaine newsletter.</p>
+</div>
+
+</div>
+</body>
+</html>
