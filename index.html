@@ -34,6 +34,29 @@ header h1 em{color:var(--taupe);font-style:italic;}
 .card-num{font-family:"DM Serif Display",serif;font-size:20px;color:var(--blue);font-weight:700;margin-bottom:6px;}
 .card-label{font-size:13px;color:var(--muted);line-height:1.4;}
 .card-badge{display:inline-block;margin-top:12px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;}
+.text-red-required{color: #ef4444;}
+
+/* Message d'erreur */
+.invalid-message {
+  display: none;
+  color: #d32f2f;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+/* Afficher le message si le champ est invalide et que le formulaire est soumis*/
+form.submitted select:invalid ~ .invalid-message,
+form.submitted input:required:invalid ~ .invalid-message {
+  display: block;
+}
+form.submitted select:invalid:not(:focus), 
+form.submitted input:required:invalid:not(:focus) {
+  border: 2px solid #d32f2f;
+  background-color: #ffebee;
+}
+
+.required-fields-info{color:#6b7280;margin-bottom:20px;}
 .badge-form{background:var(--blue-light);color:var(--blue);}
 .badge-sheet{background:var(--taupe-light);color:#6b4c1e;}
 .progress-bar{height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
@@ -149,9 +172,9 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
     <p class="gate-title">Combien de laveries exploitez-vous ?</p>
     <p class="gate-sub">Nous adaptons le formulaire à votre situation.</p>
     <div class="choice-cards">
-      <div class="choice-card" data-target="screen-solo"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">1</div><div class="card-label">Une seule laverie</div><div class="card-badge badge-form">Formulaire en ligne</div></div>
-      <div class="choice-card" data-target="screen-multi"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">2 à 5</div><div class="card-label">Petit réseau</div><div class="card-badge badge-form">Formulaire simplifié</div></div>
-      <div class="choice-card" data-target="screen-xl"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">6 et +</div><div class="card-label">Grand réseau</div><div class="card-badge badge-sheet">Tableur à importer</div></div>
+      <div class="choice-card" data-target="screen-solo"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">1</div><div class="card-label">Une seule laverie</div><div class="card-badge badge-form">Formulaire rapide</div></div>
+      <div class="choice-card" data-target="screen-multi"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">2 à 3</div><div class="card-label">Petit réseau</div><div class="card-badge badge-form">Formulaire multi-sites</div></div>
+      <div class="choice-card" data-target="screen-xl"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">4 et +</div><div class="card-label">Plusieurs laveries</div><div class="card-badge badge-sheet">Import Excel recommandé</div></div>
     </div>
   </div>
 
@@ -159,11 +182,12 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
   <div class="screen" id="screen-solo">
     <div class="progress-bar"><div class="progress-fill" id="pf-solo"></div></div>
     <form id="form-solo" novalidate>
+      <p class="required-fields-info">Les champs marqués <span class="text-red-required">*</span> sont obligatoires.</p>
       <div class="section">
         <div class="section-label"><div class="section-num">1</div><span class="section-title">Localisation</span></div>
         <div class="grid-2">
-          <div class="field"><label>Département</label>
-            <div class="sel-wrap"><select name="dept" id="dept-solo"><option value="">— Département —</option>
+          <div class="field"><label>Département<span class="text-red-required"> *</span></label>
+            <div class="sel-wrap"><select name="dept" id="dept-solo" required aria-required="true"><option value="" disabled selected>— Département —</option>
 <option value="01">01 – Ain</option>
 <option value="02">02 – Aisne</option>
 <option value="03">03 – Allier</option>
@@ -265,14 +289,15 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
 <option value="973">973 – Guyane</option>
 <option value="974">974 – La Réunion</option>
 <option value="976">976 – Mayotte</option>
-</select></div></div>
+</select>
+<span class="invalid-message">Veuillez sélectionner un département.</span></div></div>
           <div class="field"><label>Région <span class="opt">remplie automatiquement</span></label>
             <div class="region-display" id="region-solo">—</div>
             <input type="hidden" name="region" id="region-solo-val"></div>
         </div>
         <div class="grid-2">
-          <div class="field"><label>Type de zone</label>
-            <div class="sel-wrap"><select name="zone"><option value="">—</option><option value="centre_dense">Centre-ville dense</option><option value="periurbain">Périurbain / banlieue</option><option value="zone_comm">Zone commerciale</option><option value="residentiel">Quartier résidentiel</option><option value="rural">Zone rurale</option><option value="autre">Autre</option></select></div></div>
+          <div class="field"><label>Type de zone<span class="text-red-required"> *</span></label>
+            <div class="sel-wrap"><select name="zone" required aria-required="true"><option value="" disabled selected>—</option><option value="centre_dense">Centre-ville dense</option><option value="periurbain">Périurbain / banlieue</option><option value="zone_comm">Zone commerciale</option><option value="residentiel">Quartier résidentiel</option><option value="rural">Zone rurale</option><option value="autre">Autre</option></select><span class="invalid-message">Veuillez sélectionner un type de zone.</span></div></div>
           <div class="field"><label>Surface <span class="opt">(m², approx.)</span></label>
             <input type="number" name="surface" min="10" max="500" placeholder="ex. 80"></div>
         </div>
@@ -282,13 +307,13 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
         <div class="section-label"><div class="section-num">2</div><span class="section-title">Parc machines &amp; tarifs pratiqués</span></div>
         <div class="machine-block">
           <div class="machine-block-title">Laveuses — nombre et tarif par cycle</div>
-          <div class="machine-block-sub">Indiquez 0 si vous n’avez pas cette capacité. Tarif = prix affiché en €.</div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:8px;"><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-transform:uppercase;">Capacité</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-transform:uppercase;text-align:center;">Nb</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-transform:uppercase;text-align:center;">Tarif €</div></div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">5–6 kg</div><input type="number" name="nb_m5" min="0" max="30" placeholder="0" style="text-align:center;"><input type="number" name="tarif_m5" min="0" max="20" step="0.1" placeholder="ex. 4.50" style="text-align:center;"></div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">7–8 kg</div><input type="number" name="nb_m7" min="0" max="30" placeholder="0" style="text-align:center;"><input type="number" name="tarif_m7" min="0" max="20" step="0.1" placeholder="ex. 5.00" style="text-align:center;"></div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">9–10 kg</div><input type="number" name="nb_m10" min="0" max="30" placeholder="0" style="text-align:center;"><input type="number" name="tarif_m10" min="0" max="25" step="0.1" placeholder="ex. 7.50" style="text-align:center;"></div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">12–14 kg</div><input type="number" name="nb_m14" min="0" max="20" placeholder="0" style="text-align:center;"><input type="number" name="tarif_m14" min="0" max="30" step="0.1" placeholder="ex. 9.00" style="text-align:center;"></div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">16–20 kg</div><input type="number" name="nb_m16" min="0" max="20" placeholder="0" style="text-align:center;"><input type="number" name="tarif_m16" min="0" max="35" step="0.1" placeholder="ex. 10.00" style="text-align:center;"></div>
+          <div class="machine-block-sub">Indiquez le nombre de machines et le tarif TTC par cycle pour chaque capacité</div>
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:8px;"><div style="font-size:12px;font-weight:600;color:#6b5a3e;">Capacité</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">Nb</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">€ / cycle</div></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">5–6 kg</div><input class="machine_nb" type="number" name="nb_m5" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m5" min="0" max="20" step="0.5" placeholder="ex. 4.50" style="text-align:center;"></div>
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">7–8 kg</div><input class="machine_nb" type="number" name="nb_m7" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m7" min="0" max="20" step="0.5" placeholder="ex. 5.00" style="text-align:center;"></div>
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">9–10 kg</div><input class="machine_nb" type="number" name="nb_m10" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m10" min="0" max="25" step="0.5" placeholder="ex. 7.50" style="text-align:center;"></div>
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">12–14 kg</div><input class="machine_nb" type="number" name="nb_m14" min="0" max="20" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m14" min="0" max="30" step="0.5" placeholder="ex. 9.00" style="text-align:center;"></div>
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">16–20 kg</div><input class="machine_nb" type="number" name="nb_m16" min="0" max="20" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m16" min="0" max="35" step="0.5" placeholder="ex. 10.00" style="text-align:center;"></div>
         </div>
         <div class="machine-block">
           <div class="machine-block-title">Sèche-linge</div>
@@ -811,6 +836,22 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
     var deptSolo = document.getElementById('dept-solo');
     if (deptSolo) deptSolo.addEventListener('change', function() { autofillRegion('dept-solo','region-solo'); });
 
+    /* Enable required machine inputs */
+    document.querySelectorAll('.machine-block').forEach(block => {
+      block.querySelectorAll('div').forEach(container => {
+        const numberInputs = container.querySelectorAll('input[type="number"]');
+        if (numberInputs.length === 2) {
+          const [input1, input2] = numberInputs;
+          const updateRequired = () => {
+            input1.required = input2.value !== '';
+            input2.required = input1.value !== '';
+          };
+          input1.addEventListener('input', updateRequired);
+          input2.addEventListener('input', updateRequired);
+        }
+      });
+    });
+
     /* Progress solo */
     document.querySelectorAll('#screen-solo input, #screen-solo select').forEach(function(f) {
       f.addEventListener('change', updateProgress);
@@ -820,6 +861,10 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
     /* Soumissions */
     var fSolo = document.getElementById('form-solo');
     if (fSolo) fSolo.addEventListener('submit', function(e) {
+      if (!this.checkValidity()) {
+        e.preventDefault();
+        this.classList.add('submitted');
+      }
       e.preventDefault();
       sendWithFormspree(fSolo, 'submit-solo', 'error-solo');
     });
