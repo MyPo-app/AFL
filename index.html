@@ -100,6 +100,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
 .btn-dl{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;border:none;padding:13px 32px;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s;}
 .btn-dl:hover{background:var(--blue-mid);transform:translateY(-1px);}
 .email-return{background:var(--taupe-light);border-radius:10px;padding:20px;}
+.is-invalid{border:2px solid #d32f2f !important;background-color:#ffebee !important;}
 .email-return p{font-size:13.5px;color:#5a4a35;margin-bottom:8px;line-height:1.5;}
 .email-return strong{color:#3d3020;}
 .email-return a{color:var(--blue-mid);font-weight:600;}
@@ -309,11 +310,11 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
           <div class="machine-block-title">Laveuses — nombre et tarif par cycle</div>
           <div class="machine-block-sub">Indiquez le nombre de machines et le tarif TTC par cycle pour chaque capacité</div>
           <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:8px;"><div style="font-size:12px;font-weight:600;color:#6b5a3e;">Capacité</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">Nb</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">€ / cycle</div></div>
-          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">5–6 kg</div><input class="machine_nb" type="number" name="nb_m5" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m5" min="0" max="20" step="0.5" placeholder="ex. 4.50" style="text-align:center;"></div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">7–8 kg</div><input class="machine_nb" type="number" name="nb_m7" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m7" min="0" max="20" step="0.5" placeholder="ex. 5.00" style="text-align:center;"></div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">9–10 kg</div><input class="machine_nb" type="number" name="nb_m10" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m10" min="0" max="25" step="0.5" placeholder="ex. 7.50" style="text-align:center;"></div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">12–14 kg</div><input class="machine_nb" type="number" name="nb_m14" min="0" max="20" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m14" min="0" max="30" step="0.5" placeholder="ex. 9.00" style="text-align:center;"></div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">16–20 kg</div><input class="machine_nb" type="number" name="nb_m16" min="0" max="20" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m16" min="0" max="35" step="0.5" placeholder="ex. 10.00" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">5–6 kg</div><input class="machine-nb" type="number" name="nb_m5" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m5" min="0" max="20" step="0.5" placeholder="ex. 4.50" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">7–8 kg</div><input class="machine-nb" type="number" name="nb_m7" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m7" min="0" max="20" step="0.5" placeholder="ex. 5.00" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">9–10 kg</div><input class="machine-nb" type="number" name="nb_m10" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m10" min="0" max="25" step="0.5" placeholder="ex. 7.50" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">12–14 kg</div><input class="machine-nb" type="number" name="nb_m14" min="0" max="20" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m14" min="0" max="30" step="0.5" placeholder="ex. 9.00" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">16–20 kg</div><input class="machine-nb" type="number" name="nb_m16" min="0" max="20" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m16" min="0" max="35" step="0.5" placeholder="ex. 10.00" style="text-align:center;"></div>
         </div>
         <div class="machine-block">
           <div class="machine-block-title">Sèche-linge</div>
@@ -837,20 +838,19 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
     if (deptSolo) deptSolo.addEventListener('change', function() { autofillRegion('dept-solo','region-solo'); });
 
     /* Enable required machine inputs */
-    document.querySelectorAll('.machine-block').forEach(block => {
-      block.querySelectorAll('div').forEach(container => {
-        const numberInputs = container.querySelectorAll('input[type="number"]');
-        if (numberInputs.length === 2) {
-          const [input1, input2] = numberInputs;
-          const updateRequired = () => {
-            input1.required = input2.value !== '';
-            input2.required = input1.value !== '';
-          };
-          input1.addEventListener('input', updateRequired);
-          input2.addEventListener('input', updateRequired);
-        }
-      });
+    const machineCapacities = document.querySelectorAll('.machine-capacity');
+    machineCapacities.forEach(capacity => {
+      const machineNb = capacity.querySelector('.machine-nb');
+      const price = capacity.querySelector('.price');
+      const hasValue = (val) => val !== '' && val !== '0';
+      const updateRequired = () => {
+        machineNb.required = hasValue(price.value);
+        price.required = hasValue(machineNb.value);
+      };
+      machineNb.addEventListener('input', updateRequired);
+      price.addEventListener('input', updateRequired);
     });
+    
 
     /* Progress solo */
     document.querySelectorAll('#screen-solo input, #screen-solo select').forEach(function(f) {
@@ -861,13 +861,39 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
     /* Soumissions */
     var fSolo = document.getElementById('form-solo');
     if (fSolo) fSolo.addEventListener('submit', function(e) {
-      if (!this.checkValidity()) {
+      const hasRequiredZero = Array.from(this.elements).some(el =>
+        el.required && el.value === '0'
+      );
+      if (!this.checkValidity() || hasRequiredZero) {
         e.preventDefault();
         this.classList.add('submitted');
+        
+        // Marquer visuellement les champs required=0
+        Array.from(this.elements).forEach(el => {
+          if (el.required && el.value === '0') {
+            el.classList.add('is-invalid');
+          }
+        });
+        
+        // Scroll vers le premier champ invalide (natif ou marqué)
+        const firstInvalid = this.querySelector(':invalid, .is-invalid');
+        if (firstInvalid) {
+          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        return;
       }
       e.preventDefault();
       sendWithFormspree(fSolo, 'submit-solo', 'error-solo');
     });
+
+    // Retirer la classe is-invalid quand l'utilisateur modifie un champ
+    document.getElementById('form-solo')?.addEventListener('input', function(e) {
+      if (e.target.required && e.target.classList.contains('is-invalid') && e.target.value !== '0') {
+        e.target.classList.remove('is-invalid');
+      }
+    }, true);
+
     var fMulti = document.getElementById('form-multi');
     if (fMulti) fMulti.addEventListener('submit', function(e) {
       e.preventDefault();
