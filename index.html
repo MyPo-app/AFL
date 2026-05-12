@@ -55,6 +55,7 @@ form.submitted input:required:invalid:not(:focus) {
   border: 2px solid #d32f2f;
   background-color: #ffebee;
 }
+#washer-error{display: none;}
 
 .required-fields-info{color:#6b7280;margin-bottom:20px;}
 .badge-form{background:var(--blue-light);color:var(--blue);}
@@ -306,7 +307,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
       <div class="divider"></div>
       <div class="section">
         <div class="section-label"><div class="section-num">2</div><span class="section-title">Parc machines &amp; tarifs pratiqués</span></div>
-        <div class="machine-block">
+        <div class="machine-block washer">
           <div class="machine-block-title">Laveuses — nombre et tarif par cycle</div>
           <div class="machine-block-sub">Indiquez le nombre de machines et le tarif TTC par cycle pour chaque capacité</div>
           <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:8px;"><div style="font-size:12px;font-weight:600;color:#6b5a3e;">Capacité</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">Nb</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">€ / cycle</div></div>
@@ -315,6 +316,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
           <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">9–10 kg</div><input class="machine-nb" type="number" name="nb_m10" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m10" min="0" max="25" step="0.5" placeholder="ex. 7.50" style="text-align:center;"></div>
           <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">12–14 kg</div><input class="machine-nb" type="number" name="nb_m14" min="0" max="20" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m14" min="0" max="30" step="0.5" placeholder="ex. 9.00" style="text-align:center;"></div>
           <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">16–20 kg</div><input class="machine-nb" type="number" name="nb_m16" min="0" max="20" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m16" min="0" max="35" step="0.5" placeholder="ex. 10.00" style="text-align:center;"></div>
+          <span class="invalid-message" id="washer-error">Veuillez remplir au moins une capacité de laveuse (nombre + tarif).</span>
         </div>
         <div class="machine-block">
           <div class="machine-block-title">Séchoirs</div>
@@ -916,9 +918,19 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
       const hasRequiredZero = Array.from(this.elements).some(el =>
         el.required && el.value === '0'
       );
-      if (!this.checkValidity() || hasRequiredZero) {
+      const washerBlock = document.querySelector('.machine-block.washer');
+      const hasCompleteWasher = washerBlock && Array.from(washerBlock.querySelectorAll('.machine-capacity')).some(capacity => {
+        const nb = capacity.querySelector('.machine-nb');
+        const price = capacity.querySelector('.price');
+        return nb && price && nb.value !== '' && nb.value !== '0' && price.value !== '' && price.value !== '0';
+      });
+      if (!this.checkValidity() || hasRequiredZero || !hasCompleteWasher) {
         e.preventDefault();
         this.classList.add('submitted');
+
+        if (!hasCompleteWasher) {
+          document.querySelector('#washer-error').style.display = 'block';
+        }
         
         // Marquer visuellement les champs required=0
         Array.from(this.elements).forEach(el => {
