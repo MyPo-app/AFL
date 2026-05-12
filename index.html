@@ -299,8 +299,8 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
         <div class="grid-2">
           <div class="field"><label>Type de zone<span class="text-red-required"> *</span></label>
             <div class="sel-wrap"><select name="zone" required aria-required="true"><option value="" disabled selected>—</option><option value="centre_dense">Centre-ville dense</option><option value="periurbain">Périurbain / banlieue</option><option value="zone_comm">Zone commerciale</option><option value="residentiel">Quartier résidentiel</option><option value="rural">Zone rurale</option><option value="autre">Autre</option></select><span class="invalid-message">Veuillez sélectionner un type de zone.</span></div></div>
-          <div class="field"><label>Surface <span class="opt">(m², approx.)</span></label>
-            <input type="number" name="surface" min="10" max="500" placeholder="ex. 80"></div>
+          <div class="field"><label>Surface<span class="text-red-required"> *</span><span class="opt">(m², approx.)</span></label>
+            <input type="number" name="surface" min="10" max="500" placeholder="ex. 80" required aria-required="true"><span class="invalid-message">Veuillez indiquer une surface.</span></div>
         </div>
       </div>
       <div class="divider"></div>
@@ -334,8 +334,8 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
           <div class="field"><label>Cycles moyens / machine / jour <span class="opt">toutes capacités</span></label>
             <input type="number" name="cycles_global" min="0" max="30" step="0.5" placeholder="ex. 4">
             <p class="hint">Estimation sur un mois courant, hors vacances si atypique.</p></div>
-          <div class="field"><label>Amplitude horaire d’ouverture</label>
-            <div class="sel-wrap"><select name="amplitude"><option value="">—</option><option>Moins de 12h / jour</option><option>12h à 16h / jour</option><option>16h à 20h / jour</option><option>24h / 24</option></select></div></div>
+          <div class="field"><label>Amplitude horaire d'ouverture<span class="text-red-required"> *</span></label>
+            <div class="sel-wrap"><select name="amplitude" required aria-required="true"><option value="">—</option><option>Moins de 12h / jour</option><option>12h à 16h / jour</option><option>16h à 20h / jour</option><option>24h / 24</option></select><span class="invalid-message">Veuillez indiquer une amplitude horaire.</span></div></div>
         </div>
         <div class="field"><label>Répartition de l'activité</label>
           <div class="radio-cards c3">
@@ -425,15 +425,21 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
           <label><input type="checkbox" name="interet" value="cycles"> Cycles / machine / jour par zone géographique</label>
           <label><input type="checkbox" name="interet" value="tarifs"> Fourchettes tarifaires par capacité et par région</label>
           <label><input type="checkbox" name="interet" value="pannes"> Taux de panne par marque / modèle</label>
-          <label><input type="checkbox" name="interet" value="parc"> Composition type d’un parc selon la surface</label>
+          <label><input type="checkbox" name="interet" value="parc"> Composition type d'un parc selon la surface</label>
           <label><input type="checkbox" name="interet" value="energie"> Consommation énergétique comparée</label>
           <label><input type="checkbox" name="interet" value="paiement"> Évolution des modes de paiement</label>
         </div>
       </div>
       <div class="submit-area">
-        <p class="submit-note">Réponses transmises anonymement — résultats publiés dans la newsletter AFL.</p>
+        <p class="submit-note">
+          <label style="display:flex;align-items:center;gap:8px;justify-content:center;">
+            <input type="checkbox" id="consent-solo">
+            Je consens au traitement de mes données conformément au RGPD
+          </label>
+          Réponses transmises anonymement — Résultats publiés dans la newsletter AFL.
+        </p>
         <button type="button" class="btn-back" data-back="screen-gate">← Retour</button>
-        <button type="submit" class="btn-submit" id="submit-solo">Envoyer mes réponses →</button>
+        <button type="submit" class="btn-submit" id="submit-solo" disabled>Envoyer mes réponses →</button>
         <div class="error-msg" id="error-solo">Une erreur est survenue. Veuillez réessayer ou écrire à afl.laveries@gmail.com</div>
       </div>
     </form>
@@ -860,6 +866,15 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
     document.querySelectorAll('.choice-card[data-target]').forEach(function(card) {
       card.addEventListener('click', function() { goTo(card.getAttribute('data-target')); });
     });
+
+    /* Consentement RGPD - activer/désactiver bouton */
+    var consentSolo = document.getElementById('consent-solo');
+    var submitSolo = document.getElementById('submit-solo');
+    if (consentSolo && submitSolo) {
+      consentSolo.addEventListener('change', function() {
+        submitSolo.disabled = !this.checked;
+      });
+    }
 
     /* Boutons retour */
     document.querySelectorAll('[data-back]').forEach(function(btn) {
