@@ -337,19 +337,51 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
           <div class="field"><label>Amplitude horaire d’ouverture</label>
             <div class="sel-wrap"><select name="amplitude"><option value="">—</option><option>Moins de 12h / jour</option><option>12h à 16h / jour</option><option>16h à 20h / jour</option><option>24h / 24</option></select></div></div>
         </div>
-        <div class="field"><label>Répartition de l’activité</label>
+        <div class="field"><label>Répartition de l'activité</label>
           <div class="radio-cards c3">
             <div class="rc"><input type="radio" name="rep" id="r1" value="semaine"><label for="r1">Semaine dominante</label></div>
             <div class="rc"><input type="radio" name="rep" id="r2" value="equilibre"><label for="r2">Équilibré</label></div>
             <div class="rc"><input type="radio" name="rep" id="r3" value="weekend"><label for="r3">Week-end dominant</label></div>
           </div></div>
-        <div class="field"><label>Taux d’immobilisation moyen — ensemble du parc (12 derniers mois)</label>
-          <p class="hint" style="margin-bottom:8px;">Proportion du temps où au moins une machine est indisponible. Moyenne nationale : 10 à 20 %.</p>
+        <div class="field"><label>Taux d'immobilisation moyen — ensemble du parc (12 derniers mois)</label>
+          <p class="hint" style="margin-bottom:8px;">Proportion du temps où au moins une machine est indisponible pour panne ou maintenance. La moyenne nationale observée se situe entre 10 et 20 %.</p>
           <div class="radio-cards c2">
-            <div class="rc"><input type="radio" name="immo" id="i1" value="lt5"><label for="i1">Moins de 5 %</label></div>
-            <div class="rc"><input type="radio" name="immo" id="i2" value="5-10"><label for="i2">5 à 10 %</label></div>
-            <div class="rc"><input type="radio" name="immo" id="i3" value="10-20"><label for="i3">10 à 20 %</label></div>
-            <div class="rc"><input type="radio" name="immo" id="i4" value="gt20"><label for="i4">Plus de 20 %</label></div>
+            <div class="rc"><input type="radio" name="immo" id="i1" value="lt5"><label for="i1">Moins de 5 %</label></div>
+            <div class="rc"><input type="radio" name="immo" id="i2" value="5-10"><label for="i2">5 à 10 %</label></div>
+            <div class="rc"><input type="radio" name="immo" id="i3" value="10-20"><label for="i3">10 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="immo" id="i4" value="gt20"><label for="i4">Plus de 20 %</label></div>
+          </div></div>
+        <div class="field"><label>Taux d'occupation de vos laveuses</label>
+          <p class="hint" style="margin-bottom:8px;">Basé sur un cycle moyen de 40 min. Exemple : pour 15 h d'ouverture (900 min), le maximum théorique est de 22,5 cycles / machine / jour.</p>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="occupation" id="o1" value="lt10"><label for="o1">Moins de 10 %</label></div>
+            <div class="rc"><input type="radio" name="occupation" id="o2" value="10-15"><label for="o2">10 à 15 %</label></div>
+            <div class="rc"><input type="radio" name="occupation" id="o3" value="15-20"><label for="o3">15 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="occupation" id="o4" value="gt20"><label for="o4">Plus de 20 %</label></div>
+          </div></div>
+        <div class="field"><label>Part du CA générée par les séchoirs (estimation)</label>
+          <p class="hint" style="margin-bottom:8px;">CA séchoirs / CA total de la laverie.</p>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="ca" id="ca1" value="lt10"><label for="ca1">Moins de 10 %</label></div>
+            <div class="rc"><input type="radio" name="ca" id="ca2" value="10-20"><label for="ca2">10 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="ca" id="ca3" value="20-30"><label for="ca3">20 à 30 %</label></div>
+            <div class="rc"><input type="radio" name="ca" id="ca4" value="gt30"><label for="ca4">Plus de 30 %</label></div>
+          </div></div>
+        <div class="field"><label>Part de l'électricité dans le CA (estimation)</label>
+          <p class="hint" style="margin-bottom:8px;">Coût électricité / CA total de la laverie.</p>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="elec" id="cae1" value="lt10"><label for="cae1">Moins de 10 %</label></div>
+            <div class="rc"><input type="radio" name="elec" id="cae2" value="10-15"><label for="cae2">10 à 15 %</label></div>
+            <div class="rc"><input type="radio" name="elec" id="cae3" value="15-20"><label for="cae3">15 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="elec" id="cae4" value="gt20"><label for="cae4">Plus de 20 %</label></div>
+          </div></div>
+        <div class="field"><label>Part de l'eau dans le CA (estimation)</label>
+          <p class="hint" style="margin-bottom:8px;">Coût eau / CA total de la laverie.</p>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="eau" id="eau1" value="lt10"><label for="eau1">Moins de 10 %</label></div>
+            <div class="rc"><input type="radio" name="eau" id="eau2" value="10-15"><label for="eau2">10 à 15 %</label></div>
+            <div class="rc"><input type="radio" name="eau" id="eau3" value="15-20"><label for="ceau">15 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="eau" id="eau4" value="gt20"><label for="eau4">Plus de 20 %</label></div>
           </div></div>
       </div>
       <div class="divider"></div>
