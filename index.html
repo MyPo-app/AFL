@@ -317,12 +317,12 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
           <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">16–20 kg</div><input class="machine-nb" type="number" name="nb_m16" min="0" max="20" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m16" min="0" max="35" step="0.5" placeholder="ex. 10.00" style="text-align:center;"></div>
         </div>
         <div class="machine-block">
-          <div class="machine-block-title">Sèche-linge</div>
-          <div class="grid-3">
-            <div class="field"><label>8–9 kg</label><input type="number" name="s8" min="0" max="20" placeholder="0"></div>
-            <div class="field"><label>13 kg</label><input type="number" name="s13" min="0" max="20" placeholder="0"></div>
-            <div class="field"><label>Autre</label><input type="number" name="sautre" min="0" max="20" placeholder="0"></div>
-          </div>
+          <div class="machine-block-title">Séchoirs</div>
+          <div class="machine-block-sub">Durée et tarif d'un cycle par capacité.<br>Indiquez la durée et le prix d'un cycle tel qu'affiché sur votre séchoir. Laissez un groupe vide si vous ne possédez pas cette taille de séchoir.</div>
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:8px;"><div style="font-size:12px;font-weight:600;color:#6b5a3e;">Capacité</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">Durée d'un cycle (minutes)</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">€ / cycle</div></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">Petit séchoir (7 à 10 kg)</div><input class="minutes-cycle" type="number" name="minutes_petit_sechoir" min="0" max="30" placeholder="ex. 8" style="text-align:center;"><input class="price" type="number" name="tarif_petit_sechoir" min="0" max="20" step="0.5" placeholder="ex. 1.50" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">Séchoir standard (11 à 14 kg)</div><input class="minutes-cycle" type="number" name="minutes_std_sechoir" min="0" max="30" placeholder="ex. 8" style="text-align:center;"><input class="price" type="number" name="tarif_std_sechoir" min="0" max="20" step="0.5" placeholder="ex. 1.50" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">Grand séchoir (16 à 20 kg)</div><input class="minutes-cycle" type="number" name="minutes_grand_sechoir" min="0" max="30" placeholder="ex. 8" style="text-align:center;"><input class="price" type="number" name="tarif_grand_sechoir" min="0" max="25" step="0.5" placeholder="ex. 1.50" style="text-align:center;"></div>
         </div>
         <div class="field"><label>Ancienneté du parc principal</label>
           <div class="sel-wrap"><select name="anc_parc"><option value="">—</option><option>Moins de 3 ans</option><option>3 à 7 ans</option><option>7 à 12 ans</option><option>Plus de 12 ans</option></select></div></div>
@@ -840,14 +840,14 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
     /* Enable required machine inputs */
     const machineCapacities = document.querySelectorAll('.machine-capacity');
     machineCapacities.forEach(capacity => {
-      const machineNb = capacity.querySelector('.machine-nb');
+      const machineNbOrMinutesCycle = capacity.querySelector('.machine-nb, .minutes-cycle');
       const price = capacity.querySelector('.price');
       const hasValue = (val) => val !== '' && val !== '0';
       const updateRequired = () => {
-        machineNb.required = hasValue(price.value);
-        price.required = hasValue(machineNb.value);
+        machineNbOrMinutesCycle.required = hasValue(price.value);
+        price.required = hasValue(machineNbOrMinutesCycle.value);
       };
-      machineNb.addEventListener('input', updateRequired);
+      machineNbOrMinutesCycle.addEventListener('input', updateRequired);
       price.addEventListener('input', updateRequired);
     });
     
