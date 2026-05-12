@@ -34,6 +34,30 @@ header h1 em{color:var(--taupe);font-style:italic;}
 .card-num{font-family:"DM Serif Display",serif;font-size:20px;color:var(--blue);font-weight:700;margin-bottom:6px;}
 .card-label{font-size:13px;color:var(--muted);line-height:1.4;}
 .card-badge{display:inline-block;margin-top:12px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;}
+.text-red-required{color: #ef4444;}
+
+/* Message d'erreur */
+.invalid-message {
+  display: none;
+  color: #d32f2f;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+/* Afficher le message si le champ est invalide et que le formulaire est soumis*/
+form.submitted select:invalid ~ .invalid-message,
+form.submitted input:required:invalid ~ .invalid-message {
+  display: block;
+}
+form.submitted select:invalid:not(:focus), 
+form.submitted input:required:invalid:not(:focus) {
+  border: 2px solid #d32f2f;
+  background-color: #ffebee;
+}
+#washer-error{display: none;}
+
+.required-fields-info{color:#6b7280;margin-bottom:20px;}
 .badge-form{background:var(--blue-light);color:var(--blue);}
 .badge-sheet{background:var(--taupe-light);color:#6b4c1e;}
 .progress-bar{height:3px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
@@ -77,6 +101,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
 .btn-dl{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;border:none;padding:13px 32px;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s;}
 .btn-dl:hover{background:var(--blue-mid);transform:translateY(-1px);}
 .email-return{background:var(--taupe-light);border-radius:10px;padding:20px;}
+.is-invalid{border:2px solid #d32f2f !important;background-color:#ffebee !important;}
 .email-return p{font-size:13.5px;color:#5a4a35;margin-bottom:8px;line-height:1.5;}
 .email-return strong{color:#3d3020;}
 .email-return a{color:var(--blue-mid);font-weight:600;}
@@ -149,9 +174,9 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
     <p class="gate-title">Combien de laveries exploitez-vous ?</p>
     <p class="gate-sub">Nous adaptons le formulaire à votre situation.</p>
     <div class="choice-cards">
-      <div class="choice-card" data-target="screen-solo"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">1</div><div class="card-label">Une seule laverie</div><div class="card-badge badge-form">Formulaire en ligne</div></div>
-      <div class="choice-card" data-target="screen-multi"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">2 à 5</div><div class="card-label">Petit réseau</div><div class="card-badge badge-form">Formulaire simplifié</div></div>
-      <div class="choice-card" data-target="screen-xl"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">6 et +</div><div class="card-label">Grand réseau</div><div class="card-badge badge-sheet">Tableur à importer</div></div>
+      <div class="choice-card" data-target="screen-solo"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">1</div><div class="card-label">Une seule laverie</div><div class="card-badge badge-form">Formulaire rapide</div></div>
+      <div class="choice-card" data-target="screen-multi"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">2 à 3</div><div class="card-label">Petit réseau</div><div class="card-badge badge-form">Formulaire multi-sites</div></div>
+      <div class="choice-card" data-target="screen-xl"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">4 et +</div><div class="card-label">Plusieurs laveries</div><div class="card-badge badge-sheet">Import Excel recommandé</div></div>
     </div>
   </div>
 
@@ -159,11 +184,12 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
   <div class="screen" id="screen-solo">
     <div class="progress-bar"><div class="progress-fill" id="pf-solo"></div></div>
     <form id="form-solo" novalidate>
+      <p class="required-fields-info">Les champs marqués <span class="text-red-required">*</span> sont obligatoires.</p>
       <div class="section">
         <div class="section-label"><div class="section-num">1</div><span class="section-title">Localisation</span></div>
         <div class="grid-2">
-          <div class="field"><label>Département</label>
-            <div class="sel-wrap"><select name="dept" id="dept-solo"><option value="">— Département —</option>
+          <div class="field"><label>Département<span class="text-red-required"> *</span></label>
+            <div class="sel-wrap"><select name="dept" id="dept-solo" required aria-required="true"><option value="" disabled selected>— Département —</option>
 <option value="01">01 – Ain</option>
 <option value="02">02 – Aisne</option>
 <option value="03">03 – Allier</option>
@@ -265,38 +291,40 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
 <option value="973">973 – Guyane</option>
 <option value="974">974 – La Réunion</option>
 <option value="976">976 – Mayotte</option>
-</select></div></div>
+</select>
+<span class="invalid-message">Veuillez sélectionner un département.</span></div></div>
           <div class="field"><label>Région <span class="opt">remplie automatiquement</span></label>
             <div class="region-display" id="region-solo">—</div>
             <input type="hidden" name="region" id="region-solo-val"></div>
         </div>
         <div class="grid-2">
-          <div class="field"><label>Type de zone</label>
-            <div class="sel-wrap"><select name="zone"><option value="">—</option><option value="centre_dense">Centre-ville dense</option><option value="periurbain">Périurbain / banlieue</option><option value="zone_comm">Zone commerciale</option><option value="residentiel">Quartier résidentiel</option><option value="rural">Zone rurale</option><option value="autre">Autre</option></select></div></div>
-          <div class="field"><label>Surface <span class="opt">(m², approx.)</span></label>
-            <input type="number" name="surface" min="10" max="500" placeholder="ex. 80"></div>
+          <div class="field"><label>Type de zone<span class="text-red-required"> *</span></label>
+            <div class="sel-wrap"><select name="zone" required aria-required="true"><option value="" disabled selected>—</option><option value="centre_dense">Centre-ville dense</option><option value="periurbain">Périurbain / banlieue</option><option value="zone_comm">Zone commerciale</option><option value="residentiel">Quartier résidentiel</option><option value="rural">Zone rurale</option><option value="autre">Autre</option></select><span class="invalid-message">Veuillez sélectionner un type de zone.</span></div></div>
+          <div class="field"><label>Surface<span class="text-red-required"> *</span><span class="opt">(m², approx.)</span></label>
+            <input type="number" name="surface" min="10" max="500" placeholder="ex. 80" required aria-required="true"><span class="invalid-message">Veuillez indiquer une surface.</span></div>
         </div>
       </div>
       <div class="divider"></div>
       <div class="section">
         <div class="section-label"><div class="section-num">2</div><span class="section-title">Parc machines &amp; tarifs pratiqués</span></div>
-        <div class="machine-block">
+        <div class="machine-block washer">
           <div class="machine-block-title">Laveuses — nombre et tarif par cycle</div>
-          <div class="machine-block-sub">Indiquez 0 si vous n’avez pas cette capacité. Tarif = prix affiché en €.</div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:8px;"><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-transform:uppercase;">Capacité</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-transform:uppercase;text-align:center;">Nb</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-transform:uppercase;text-align:center;">Tarif €</div></div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">5–6 kg</div><input type="number" name="nb_m5" min="0" max="30" placeholder="0" style="text-align:center;"><input type="number" name="tarif_m5" min="0" max="20" step="0.1" placeholder="ex. 4.50" style="text-align:center;"></div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">7–8 kg</div><input type="number" name="nb_m7" min="0" max="30" placeholder="0" style="text-align:center;"><input type="number" name="tarif_m7" min="0" max="20" step="0.1" placeholder="ex. 5.00" style="text-align:center;"></div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">9–10 kg</div><input type="number" name="nb_m10" min="0" max="30" placeholder="0" style="text-align:center;"><input type="number" name="tarif_m10" min="0" max="25" step="0.1" placeholder="ex. 7.50" style="text-align:center;"></div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">12–14 kg</div><input type="number" name="nb_m14" min="0" max="20" placeholder="0" style="text-align:center;"><input type="number" name="tarif_m14" min="0" max="30" step="0.1" placeholder="ex. 9.00" style="text-align:center;"></div>
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">16–20 kg</div><input type="number" name="nb_m16" min="0" max="20" placeholder="0" style="text-align:center;"><input type="number" name="tarif_m16" min="0" max="35" step="0.1" placeholder="ex. 10.00" style="text-align:center;"></div>
+          <div class="machine-block-sub">Indiquez le nombre de machines et le tarif TTC par cycle pour chaque capacité</div>
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:8px;"><div style="font-size:12px;font-weight:600;color:#6b5a3e;">Capacité</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">Nb</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">€ / cycle</div></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">5–6 kg</div><input class="machine-nb" type="number" name="nb_m5" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m5" min="0" max="20" step="0.5" placeholder="ex. 4.50" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">7–8 kg</div><input class="machine-nb" type="number" name="nb_m7" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m7" min="0" max="20" step="0.5" placeholder="ex. 5.00" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">9–10 kg</div><input class="machine-nb" type="number" name="nb_m10" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m10" min="0" max="25" step="0.5" placeholder="ex. 7.50" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">12–14 kg</div><input class="machine-nb" type="number" name="nb_m14" min="0" max="20" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m14" min="0" max="30" step="0.5" placeholder="ex. 9.00" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">16–20 kg</div><input class="machine-nb" type="number" name="nb_m16" min="0" max="20" placeholder="0" style="text-align:center;"><input class="price" type="number" name="tarif_m16" min="0" max="35" step="0.5" placeholder="ex. 10.00" style="text-align:center;"></div>
+          <span class="invalid-message" id="washer-error">Veuillez remplir au moins une capacité de laveuse (nombre + tarif).</span>
         </div>
         <div class="machine-block">
-          <div class="machine-block-title">Sèche-linge</div>
-          <div class="grid-3">
-            <div class="field"><label>8–9 kg</label><input type="number" name="s8" min="0" max="20" placeholder="0"></div>
-            <div class="field"><label>13 kg</label><input type="number" name="s13" min="0" max="20" placeholder="0"></div>
-            <div class="field"><label>Autre</label><input type="number" name="sautre" min="0" max="20" placeholder="0"></div>
-          </div>
+          <div class="machine-block-title">Séchoirs</div>
+          <div class="machine-block-sub">Durée et tarif d'un cycle par capacité.<br>Indiquez la durée et le prix d'un cycle tel qu'affiché sur votre séchoir. Laissez un groupe vide si vous ne possédez pas cette taille de séchoir.</div>
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:8px;"><div style="font-size:12px;font-weight:600;color:#6b5a3e;">Capacité</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">Durée d'un cycle (minutes)</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">€ / cycle</div></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">Petit séchoir (7 à 10 kg)</div><input class="minutes-cycle" type="number" name="minutes_petit_sechoir" min="0" max="30" placeholder="ex. 8" style="text-align:center;"><input class="price" type="number" name="tarif_petit_sechoir" min="0" max="20" step="0.5" placeholder="ex. 1.50" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">Séchoir standard (11 à 14 kg)</div><input class="minutes-cycle" type="number" name="minutes_std_sechoir" min="0" max="30" placeholder="ex. 8" style="text-align:center;"><input class="price" type="number" name="tarif_std_sechoir" min="0" max="20" step="0.5" placeholder="ex. 1.50" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">Grand séchoir (16 à 20 kg)</div><input class="minutes-cycle" type="number" name="minutes_grand_sechoir" min="0" max="30" placeholder="ex. 8" style="text-align:center;"><input class="price" type="number" name="tarif_grand_sechoir" min="0" max="25" step="0.5" placeholder="ex. 1.50" style="text-align:center;"></div>
         </div>
         <div class="field"><label>Ancienneté du parc principal</label>
           <div class="sel-wrap"><select name="anc_parc"><option value="">—</option><option>Moins de 3 ans</option><option>3 à 7 ans</option><option>7 à 12 ans</option><option>Plus de 12 ans</option></select></div></div>
@@ -308,22 +336,54 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
           <div class="field"><label>Cycles moyens / machine / jour <span class="opt">toutes capacités</span></label>
             <input type="number" name="cycles_global" min="0" max="30" step="0.5" placeholder="ex. 4">
             <p class="hint">Estimation sur un mois courant, hors vacances si atypique.</p></div>
-          <div class="field"><label>Amplitude horaire d’ouverture</label>
-            <div class="sel-wrap"><select name="amplitude"><option value="">—</option><option>Moins de 12h / jour</option><option>12h à 16h / jour</option><option>16h à 20h / jour</option><option>24h / 24</option></select></div></div>
+          <div class="field"><label>Amplitude horaire d'ouverture<span class="text-red-required"> *</span></label>
+            <div class="sel-wrap"><select name="amplitude" required aria-required="true"><option value="">—</option><option>Moins de 12h / jour</option><option>12h à 16h / jour</option><option>16h à 20h / jour</option><option>24h / 24</option></select><span class="invalid-message">Veuillez indiquer une amplitude horaire.</span></div></div>
         </div>
-        <div class="field"><label>Répartition de l’activité</label>
+        <div class="field"><label>Répartition de l'activité</label>
           <div class="radio-cards c3">
             <div class="rc"><input type="radio" name="rep" id="r1" value="semaine"><label for="r1">Semaine dominante</label></div>
             <div class="rc"><input type="radio" name="rep" id="r2" value="equilibre"><label for="r2">Équilibré</label></div>
             <div class="rc"><input type="radio" name="rep" id="r3" value="weekend"><label for="r3">Week-end dominant</label></div>
           </div></div>
-        <div class="field"><label>Taux d’immobilisation moyen — ensemble du parc (12 derniers mois)</label>
-          <p class="hint" style="margin-bottom:8px;">Proportion du temps où au moins une machine est indisponible. Moyenne nationale : 10 à 20 %.</p>
+        <div class="field"><label>Taux d'immobilisation moyen — ensemble du parc (12 derniers mois)</label>
+          <p class="hint" style="margin-bottom:8px;">Proportion du temps où au moins une machine est indisponible pour panne ou maintenance. La moyenne nationale observée se situe entre 10 et 20 %.</p>
           <div class="radio-cards c2">
-            <div class="rc"><input type="radio" name="immo" id="i1" value="lt5"><label for="i1">Moins de 5 %</label></div>
-            <div class="rc"><input type="radio" name="immo" id="i2" value="5-10"><label for="i2">5 à 10 %</label></div>
-            <div class="rc"><input type="radio" name="immo" id="i3" value="10-20"><label for="i3">10 à 20 %</label></div>
-            <div class="rc"><input type="radio" name="immo" id="i4" value="gt20"><label for="i4">Plus de 20 %</label></div>
+            <div class="rc"><input type="radio" name="immo" id="i1" value="lt5"><label for="i1">Moins de 5 %</label></div>
+            <div class="rc"><input type="radio" name="immo" id="i2" value="5-10"><label for="i2">5 à 10 %</label></div>
+            <div class="rc"><input type="radio" name="immo" id="i3" value="10-20"><label for="i3">10 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="immo" id="i4" value="gt20"><label for="i4">Plus de 20 %</label></div>
+          </div></div>
+        <div class="field"><label>Taux d'occupation de vos laveuses</label>
+          <p class="hint" style="margin-bottom:8px;">Basé sur un cycle moyen de 40 min. Exemple : pour 15 h d'ouverture (900 min), le maximum théorique est de 22,5 cycles / machine / jour.</p>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="occupation" id="o1" value="lt10"><label for="o1">Moins de 10 %</label></div>
+            <div class="rc"><input type="radio" name="occupation" id="o2" value="10-15"><label for="o2">10 à 15 %</label></div>
+            <div class="rc"><input type="radio" name="occupation" id="o3" value="15-20"><label for="o3">15 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="occupation" id="o4" value="gt20"><label for="o4">Plus de 20 %</label></div>
+          </div></div>
+        <div class="field"><label>Part du CA générée par les séchoirs (estimation)</label>
+          <p class="hint" style="margin-bottom:8px;">CA séchoirs / CA total de la laverie.</p>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="ca" id="ca1" value="lt10"><label for="ca1">Moins de 10 %</label></div>
+            <div class="rc"><input type="radio" name="ca" id="ca2" value="10-20"><label for="ca2">10 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="ca" id="ca3" value="20-30"><label for="ca3">20 à 30 %</label></div>
+            <div class="rc"><input type="radio" name="ca" id="ca4" value="gt30"><label for="ca4">Plus de 30 %</label></div>
+          </div></div>
+        <div class="field"><label>Part de l'électricité dans le CA (estimation)</label>
+          <p class="hint" style="margin-bottom:8px;">Coût électricité / CA total de la laverie.</p>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="elec" id="cae1" value="lt10"><label for="cae1">Moins de 10 %</label></div>
+            <div class="rc"><input type="radio" name="elec" id="cae2" value="10-15"><label for="cae2">10 à 15 %</label></div>
+            <div class="rc"><input type="radio" name="elec" id="cae3" value="15-20"><label for="cae3">15 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="elec" id="cae4" value="gt20"><label for="cae4">Plus de 20 %</label></div>
+          </div></div>
+        <div class="field"><label>Part de l'eau dans le CA (estimation)</label>
+          <p class="hint" style="margin-bottom:8px;">Coût eau / CA total de la laverie.</p>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="eau" id="eau1" value="lt10"><label for="eau1">Moins de 10 %</label></div>
+            <div class="rc"><input type="radio" name="eau" id="eau2" value="10-15"><label for="eau2">10 à 15 %</label></div>
+            <div class="rc"><input type="radio" name="eau" id="eau3" value="15-20"><label for="ceau">15 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="eau" id="eau4" value="gt20"><label for="eau4">Plus de 20 %</label></div>
           </div></div>
       </div>
       <div class="divider"></div>
@@ -347,6 +407,11 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
             <div class="rc"><input type="radio" name="distrib" id="d2" value="les_seul"><label for="d2">Lessive uniquement</label></div>
             <div class="rc"><input type="radio" name="distrib" id="d3" value="aucun"><label for="d3">Aucun</label></div>
           </div></div>
+        <div class="field"><label>Type de lessive</label>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="lessive" id="l1" value="less_inject"><label for="l1">Lessive injectée</label></div>
+            <div class="rc"><input type="radio" name="lessive" id="l2" value="less_dose"><label for="l2">Dose de lessive</label></div>
+          </div></div>
         <div class="field"><label>Votre ancienneté dans le métier</label>
           <div class="radio-cards c2">
             <div class="rc"><input type="radio" name="anc_met" id="a1" value="lt3"><label for="a1">Moins de 3 ans</label></div>
@@ -362,15 +427,21 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
           <label><input type="checkbox" name="interet" value="cycles"> Cycles / machine / jour par zone géographique</label>
           <label><input type="checkbox" name="interet" value="tarifs"> Fourchettes tarifaires par capacité et par région</label>
           <label><input type="checkbox" name="interet" value="pannes"> Taux de panne par marque / modèle</label>
-          <label><input type="checkbox" name="interet" value="parc"> Composition type d’un parc selon la surface</label>
+          <label><input type="checkbox" name="interet" value="parc"> Composition type d'un parc selon la surface</label>
           <label><input type="checkbox" name="interet" value="energie"> Consommation énergétique comparée</label>
           <label><input type="checkbox" name="interet" value="paiement"> Évolution des modes de paiement</label>
         </div>
       </div>
       <div class="submit-area">
-        <p class="submit-note">Réponses transmises anonymement — résultats publiés dans la newsletter AFL.</p>
+        <p class="submit-note">
+          <label style="display:flex;align-items:center;gap:8px;justify-content:center;">
+            <input type="checkbox" id="consent-solo">
+            Je consens au traitement de mes données conformément au RGPD
+          </label>
+          Réponses transmises anonymement — Résultats publiés dans la newsletter AFL.
+        </p>
         <button type="button" class="btn-back" data-back="screen-gate">← Retour</button>
-        <button type="submit" class="btn-submit" id="submit-solo">Envoyer mes réponses →</button>
+        <button type="submit" class="btn-submit" id="submit-solo" disabled>Envoyer mes réponses →</button>
         <div class="error-msg" id="error-solo">Une erreur est survenue. Veuillez réessayer ou écrire à afl.laveries@gmail.com</div>
       </div>
     </form>
@@ -418,7 +489,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
     <div class="download-box">
       <h3>Téléchargez le tableur AFL</h3>
       <p>Remplissez une ligne par laverie. Listes déroulantes, calculs automatiques — une seule feuille à compléter.</p>
-      <a href="AFL_Barometre_2026.xlsx" download class="btn-dl">⬇ Télécharger le tableur (.xlsx)</a>
+      <a href="AFL_Barometre_2026_VIERGE.xlsx" download class="btn-dl">⬇ Télécharger le tableur (.xlsx)</a>
     </div>
     <div class="email-return">
       <p><strong>Renvoyez le fichier complété à :</strong><br><a href="mailto:afl.laveries@gmail.com">afl.laveries@gmail.com</a></p>
@@ -798,6 +869,15 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
       card.addEventListener('click', function() { goTo(card.getAttribute('data-target')); });
     });
 
+    /* Consentement RGPD - activer/désactiver bouton */
+    var consentSolo = document.getElementById('consent-solo');
+    var submitSolo = document.getElementById('submit-solo');
+    if (consentSolo && submitSolo) {
+      consentSolo.addEventListener('change', function() {
+        submitSolo.disabled = !this.checked;
+      });
+    }
+
     /* Boutons retour */
     document.querySelectorAll('[data-back]').forEach(function(btn) {
       btn.addEventListener('click', function() { goTo(btn.getAttribute('data-back')); });
@@ -811,6 +891,21 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
     var deptSolo = document.getElementById('dept-solo');
     if (deptSolo) deptSolo.addEventListener('change', function() { autofillRegion('dept-solo','region-solo'); });
 
+    /* Enable required machine inputs */
+    const machineCapacities = document.querySelectorAll('.machine-capacity');
+    machineCapacities.forEach(capacity => {
+      const machineNbOrMinutesCycle = capacity.querySelector('.machine-nb, .minutes-cycle');
+      const price = capacity.querySelector('.price');
+      const hasValue = (val) => val !== '' && val !== '0';
+      const updateRequired = () => {
+        machineNbOrMinutesCycle.required = hasValue(price.value);
+        price.required = hasValue(machineNbOrMinutesCycle.value);
+      };
+      machineNbOrMinutesCycle.addEventListener('input', updateRequired);
+      price.addEventListener('input', updateRequired);
+    });
+    
+
     /* Progress solo */
     document.querySelectorAll('#screen-solo input, #screen-solo select').forEach(function(f) {
       f.addEventListener('change', updateProgress);
@@ -820,9 +915,49 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
     /* Soumissions */
     var fSolo = document.getElementById('form-solo');
     if (fSolo) fSolo.addEventListener('submit', function(e) {
+      const hasRequiredZero = Array.from(this.elements).some(el =>
+        el.required && el.value === '0'
+      );
+      const washerBlock = document.querySelector('.machine-block.washer');
+      const hasCompleteWasher = washerBlock && Array.from(washerBlock.querySelectorAll('.machine-capacity')).some(capacity => {
+        const nb = capacity.querySelector('.machine-nb');
+        const price = capacity.querySelector('.price');
+        return nb && price && nb.value !== '' && nb.value !== '0' && price.value !== '' && price.value !== '0';
+      });
+      if (!this.checkValidity() || hasRequiredZero || !hasCompleteWasher) {
+        e.preventDefault();
+        this.classList.add('submitted');
+
+        if (!hasCompleteWasher) {
+          document.querySelector('#washer-error').style.display = 'block';
+        }
+        
+        // Marquer visuellement les champs required=0
+        Array.from(this.elements).forEach(el => {
+          if (el.required && el.value === '0') {
+            el.classList.add('is-invalid');
+          }
+        });
+        
+        // Scroll vers le premier champ invalide (natif ou marqué)
+        const firstInvalid = this.querySelector(':invalid, .is-invalid');
+        if (firstInvalid) {
+          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        return;
+      }
       e.preventDefault();
       sendWithFormspree(fSolo, 'submit-solo', 'error-solo');
     });
+
+    // Retirer la classe is-invalid quand l'utilisateur modifie un champ
+    document.getElementById('form-solo')?.addEventListener('input', function(e) {
+      if (e.target.required && e.target.classList.contains('is-invalid') && e.target.value !== '0') {
+        e.target.classList.remove('is-invalid');
+      }
+    }, true);
+
     var fMulti = document.getElementById('form-multi');
     if (fMulti) fMulti.addEventListener('submit', function(e) {
       e.preventDefault();
