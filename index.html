@@ -132,6 +132,23 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
 .nl-note{font-size:11.5px;color:rgba(255,255,255,.45);font-style:italic;border-top:1px solid rgba(255,255,255,.1);padding-top:14px;line-height:1.5;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .fade-in{animation:fadeUp .4s ease forwards;}
+/* Navigation multiétapes */
+.multi-step-nav{display:flex;justify-content:space-between;margin-top:32px;gap:12px;}
+.btn-nav{padding:12px 28px;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;}
+.btn-prev{background:transparent;border:1.5px solir var(--border);color:var(--muted);}
+.btn-prev:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light);}
+.btn-next{background:var(--blue);border:none;color:#fff;box-shadow: 0 4px 16px rgba(27,58,107,.25);}
+.btn-next:hover{border-color:var(--blue-mid);transform: translateY(-1px);}
+.btn-next:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.step-indicator{display:flex;justify-content:center;gap:8px;margin-bottom:28px;flex-wrap:wrap;}
+.step-dot{width:10px;height:10px;border-radius:50%;background:var(--border);cursor:default;}
+.step-dot.active{background:var(--blue);}
+.step-dot.completed{background:var(--taupe);}
+.multi-step-container{display:none;}
+.multi-step-container.active{display:block;animation:fadeUp .4s ease forwards;}
+.step-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.step-title{font-family:"DM Serif Display",serif;font-size:18px;color:var(--blue);}
+.step-counter{font-size:13px;color:var(--muted);}
 </style>
 </head>
 <body>
@@ -171,12 +188,36 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
 
   <!-- GATE -->
   <div class="screen" id="screen-gate">
-    <p class="gate-title">Combien de laveries exploitez-vous ?</p>
+    <p class="gate-title">Combien de laveries exploitez-vous ?</p>
     <p class="gate-sub">Nous adaptons le formulaire à votre situation.</p>
     <div class="choice-cards">
       <div class="choice-card" data-target="screen-solo"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">1</div><div class="card-label">Une seule laverie</div><div class="card-badge badge-form">Formulaire rapide</div></div>
-      <div class="choice-card" data-target="screen-multi"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">2 à 3</div><div class="card-label">Petit réseau</div><div class="card-badge badge-form">Formulaire multi-sites</div></div>
+      <div class="choice-card" data-target="screen-multi-select"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">2 à 3</div><div class="card-label">Petit réseau</div><div class="card-badge badge-form">Formulaire multi-sites</div></div>
       <div class="choice-card" data-target="screen-xl"><div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div><div class="card-num">4 et +</div><div class="card-label">Plusieurs laveries</div><div class="card-badge badge-sheet">Import Excel recommandé</div></div>
+    </div>
+  </div>
+
+  <!-- PRÉ-SÉLECTION NOMBRE DE LAVERIES -->
+  <div class="screen" id="screen-multi-select">
+    <div class="gate-title">Combien de laveries souhaitez-vous renseigner ?</div>
+    <div class="gate-sub">Choisissez entre 1, 2 ou 3 laveries</div>
+    <div class="choice-cards" style="grid-template-columns:repeat(3, 1fr);margin-top:24px;">
+      <div class="choice-card" data-target="screen-solo" data-count="1">
+        <div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div>
+        <div class="card-num">1</div>
+        <div class="card-label">Une laverie</div>
+      </div>
+      <div class="choice-card" data-target="screen-multi" data-count="2">
+        <div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div>
+        <div class="card-num">2</div>
+        <div class="card-label">Deux laveries</div>
+      </div>
+      <div class="choice-card" data-target="screen-multi" data-count="3">
+        <div class="card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0 2 2 2 2 0 0 0 2-2"/><path d="M5 21V11"/><path d="M19 21V11"/><rect x="9" y="14" width="6" height="7" rx="1"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div>
+        <div class="card-num">3</div>
+        <div class="card-label">Trois laveries</div>
+      </div>
+      <div><button type="button" class="btn-back" data-back="screen-gate">← Retour</button></div>
     </div>
   </div>
 
@@ -382,7 +423,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
           <div class="radio-cards c2">
             <div class="rc"><input type="radio" name="eau" id="eau1" value="lt10"><label for="eau1">Moins de 10 %</label></div>
             <div class="rc"><input type="radio" name="eau" id="eau2" value="10-15"><label for="eau2">10 à 15 %</label></div>
-            <div class="rc"><input type="radio" name="eau" id="eau3" value="15-20"><label for="ceau">15 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="eau" id="eau3" value="15-20"><label for="eau3">15 à 20 %</label></div>
             <div class="rc"><input type="radio" name="eau" id="eau4" value="gt20"><label for="eau4">Plus de 20 %</label></div>
           </div></div>
       </div>
@@ -397,7 +438,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
         </div>
         <div class="grid-2">
           <div class="field"><label>Alimentation eau chaude</label>
-            <div class="sel-wrap"><select name="eau"><option value="">—</option><option>Réseau (sans résistances)</option><option>Résistances électriques</option><option>Mixte</option></select></div></div>
+            <div class="sel-wrap"><select name="eau-chaude"><option value="">—</option><option>Réseau (sans résistances)</option><option>Résistances électriques</option><option>Mixte</option></select></div></div>
           <div class="field"><label>Système de gestion à distance</label>
             <div class="sel-wrap"><select name="telemetrie"><option value="">—</option><option>Oui, connecté</option><option>Non</option><option>En cours d’installation</option></select></div></div>
         </div>
@@ -433,6 +474,9 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
         </div>
       </div>
       <div class="submit-area">
+        <div id="consent-error-solo" style="color:#d32f2f;margin:8px 0px;font-size:14px;">
+            ⚠️ Veuillez cocher cette case pour soumettre le formulaire
+        </div>
         <p class="submit-note">
           <label style="display:flex;align-items:center;gap:8px;justify-content:center;">
             <input type="checkbox" id="consent-solo">
@@ -449,37 +493,18 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
 
   <!-- MULTI -->
   <div class="screen" id="screen-multi">
-    <div class="progress-bar"><div class="progress-fill" id="pf-multi"></div></div>
+    <div class="step-header">
+      <div class="step-title" id="multi-step-title">Laverie n°<span id="current-laundry">1</span></div>
+        <div class="step-counter" id="step-counter">Étape <span id="current-step">1</span> / <span id="total-steps"></span></div>
+    </div>
+    <div class="step-indicator" id="step-indicator"></div>
     <form id="form-multi" novalidate>
-      <div class="section">
-        <div class="section-label"><div class="section-num">·</div><span class="section-title">Votre profil</span></div>
-        <div class="grid-2">
-          <div class="field"><label>Nombre de laveries exploitées</label><input type="number" name="nb_sites" min="2" max="5" placeholder="ex. 3"></div>
-          <div class="field"><label>Votre ancienneté dans le métier</label>
-            <div class="sel-wrap"><select name="anc_met_m"><option value="">—</option><option>Moins de 3 ans</option><option>3 à 10 ans</option><option>10 à 20 ans</option><option>Plus de 20 ans</option></select></div></div>
-        </div>
-      </div>
-      <div class="divider"></div>
-      <div class="section">
-        <div class="section-label"><div class="section-num">→</div><span class="section-title">Renseignez chaque laverie</span></div>
-        <p class="hint" style="margin-bottom:18px;font-size:13px;">Données approximatives bienvenues. L’objectif est d’obtenir des tendances, pas des chiffres exacts.</p>
-        <div id="sites-container"></div>
-        <button type="button" class="add-site-btn" id="btn-add-site">+ Ajouter une laverie</button>
-      </div>
-      <div class="section">
-        <div class="section-label"><div class="section-num">·</div><span class="section-title">Ce qui vous serait utile</span></div>
-        <div class="check-list">
-          <label><input type="checkbox" name="int_m" value="cycles"> Cycles / machine / jour par zone</label>
-          <label><input type="checkbox" name="int_m" value="tarifs"> Fourchettes tarifaires par capacité</label>
-          <label><input type="checkbox" name="int_m" value="pannes"> Taux de panne par marque</label>
-          <label><input type="checkbox" name="int_m" value="energie"> Consommation énergétique comparée</label>
-        </div>
-      </div>
-      <div class="submit-area">
-        <p class="submit-note">Réponses transmises anonymement.</p>
-        <button type="button" class="btn-back" data-back="screen-gate">← Retour</button>
-        <button type="submit" class="btn-submit" id="submit-multi">Envoyer mes réponses →</button>
-        <div class="error-msg" id="error-multi">Une erreur est survenue. Veuillez réessayer ou écrire à afl.laveries@gmail.com</div>
+      <p class="required-fields-info">Les champs marqués <span class="text-red-required">*</span> sont obligatoires.</p>
+      <div id="multi-steps-container"></div>
+      <div class="multi-step-nav">
+        <button type="button" class="btn-nav btn-prev" id="btn-prev" style="display:none;">← Précédent</button>
+        <button type="button" class="btn-nav btn-next" id="btn-next">Suivant →</button>
+        <button type="submit" class="btn-submit" id="submit-multi" style="display:none;" disabled>Envoyer mes réponses →</button>
       </div>
     </form>
   </div>
@@ -722,17 +747,26 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
   };
 
   /* DEPT_OPT_JS : construit ici, au niveau racine de la closure */
-  var DEPT_OPT_JS = '<option value="">— Dépt —</option>';
-  Object.keys(DEPT_NAMES).forEach(function(code) {
-    DEPT_OPT_JS += '<option value="' + code + '">' + code + ' – ' + DEPT_NAMES[code] + '</option>';
+  let DEPT_OPT_JS = '';
+  const DEPT_ORDER = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","2A","2B","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","971","972","973","974","976"];
+  DEPT_ORDER.forEach((code) => {
+    DEPT_OPT_JS += '<option value="' + code + '">' + code + ' - ' + DEPT_NAMES[code] + '</option>';
   });
 
-  var siteCount = 0;
-  var MAX_SITES = 5;
-  var FORMSPREE_URL = 'https://formspree.io/f/mwvrgjde';
+  // var siteCount = 0;
+  // var MAX_SITES = 5;
+  const FORMSPREE_URL = 'https://formspree.io/f/mwvrgjde';
+  let laundryCount = 0;
+  let currentStep = 0;
+  const siteData = [];
 
   /* ── NAVIGATION ── */
-  function goTo(id) {
+  function goTo(id, count) {
+    if (count !== undefined) {
+      laundryCount = parseInt(count);
+      if (count === 1) id = 'screen-solo';
+    };
+
     document.querySelectorAll('.screen').forEach(function(s) {
       s.style.display = 'none';
       s.classList.remove('active');
@@ -743,7 +777,7 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
       el.classList.add('fade-in');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    if (id === 'screen-multi' && siteCount === 0) addSite();
+    if (id === 'screen-multi') initMultiForm();    
   }
 
   /* ── AUTOFILL RÉGION ── */
@@ -763,45 +797,521 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
     }
   }
 
-  /* ── AJOUT SITE ── */
-  function addSite() {
-    if (siteCount >= MAX_SITES) return;
-    siteCount++;
-    var n = siteCount;
-    var caps = [['5–6 kg','m5'],['7–8 kg','m7'],['9–10 kg','m10'],['12–14 kg','m14'],['16–20 kg','m16']];
-    var rows = caps.map(function(c) {
-      return '<div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:7px;align-items:center;margin-bottom:5px;">'
-        + '<span style="font-size:13px;font-weight:500;color:#1B3A6B;">' + c[0] + '</span>'
-        + '<input type="number" name="s'+n+'_nb_'+c[1]+'" min="0" max="20" placeholder="0" style="text-align:center;">'
-        + '<input type="number" name="s'+n+'_t_'+c[1]+'" min="0" max="35" step="0.1" placeholder="€" style="text-align:center;">'
-        + '</div>';
-    }).join('');
-    var card = document.createElement('div');
-    card.className = 'site-card';
-    card.innerHTML = ''
-      + '<div style="font-size:14px;font-weight:600;color:#1B3A6B;margin-bottom:16px;display:flex;align-items:center;gap:8px;">'
-      + '<span style="background:#1B3A6B;color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;">'+n+'</span>'
-      + ' Laverie n°'+n+'</div>'
-      + '<div class="grid-2" style="margin-bottom:12px;">'
-      + '<div class="field"><label>Département</label><div class="sel-wrap"><select name="s'+n+'_dept" id="s'+n+'_dept">'+DEPT_OPT_JS+'</select></div></div>'
-      + '<div class="field"><label>Région <span class="opt">auto</span></label><div class="region-display" id="s'+n+'_region">—</div><input type="hidden" id="s'+n+'_region-val" name="s'+n+'_region"></div>'
-      + '</div>'
-      + '<div class="grid-2" style="margin-bottom:12px;">'
-      + '<div class="field"><label>Zone</label><div class="sel-wrap"><select name="s'+n+'_zone"><option value="">—</option><option>Centre dense</option><option>Périurbain</option><option>Zone commerciale</option><option>Résidentiel</option><option>Rural</option></select></div></div>'
-      + '<div class="field"><label>Cycles / machine / jour</label><input type="number" name="s'+n+'_cyc" min="0" max="20" step="0.5" placeholder="ex. 4"></div>'
-      + '</div>'
-      + '<div style="background:#F5F0E8;border-radius:8px;padding:14px 16px;margin-bottom:12px;">'
-      + '<div style="font-size:12px;font-weight:600;color:#6b5a3e;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;">Laveuses — nb et tarif</div>'
-      + '<div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:7px;margin-bottom:4px;"><span style="font-size:11px;color:#8a7560;">Capacité</span><span style="font-size:11px;color:#8a7560;text-align:center;">Nb</span><span style="font-size:11px;color:#8a7560;text-align:center;">€/cycle</span></div>'
-      + rows + '</div>'
-      + '<div class="grid-2">'
-      + '<div class="field"><label>Taux d’immobilisation</label><div class="sel-wrap"><select name="s'+n+'_immo"><option value="">—</option><option>Moins de 5 %</option><option>5 à 10 %</option><option>10 à 20 %</option><option>Plus de 20 %</option></select></div></div>'
-      + '<div class="field"><label>Mode de paiement</label><div class="sel-wrap"><select name="s'+n+'_pmt"><option value="">—</option><option>Pièces</option><option>CB / sans contact</option><option>Application</option><option>Mixte</option></select></div></div>'
-      + '</div>';
-    document.getElementById('sites-container').appendChild(card);
-    var deptSel = document.getElementById('s'+n+'_dept');
-    if (deptSel) deptSel.addEventListener('change', function() { autofillRegion('s'+n+'_dept','s'+n+'_region'); });
-    if (siteCount >= MAX_SITES) { var b = document.getElementById('btn-add-site'); if(b) b.style.display='none'; }
+  /* ── INITIALISATION FORMULAIRE MULTI ── */ 
+  function initMultiForm() {
+    generateMultiSteps();
+    updateStepNavigation();
+    updateStepIndicator();
+    document.getElementById('btn-next')?.addEventListener('click', nextStep);
+    document.getElementById('btn-prev')?.addEventListener('click', prevStep);
+    document.getElementById('form-multi')?.addEventListener('input', function(e) {
+      if (e.target.classList.contains('machine-nb') || e.target.classList.contains('price')  || e.target.classList.contains('minutes-cycle')) {
+        validateMachineFields(e.target);
+      }
+    });
+  }
+
+  /* ── GÉNÉRATION DES ÉTAPES MULTI ── */
+  function generateMultiSteps() {
+    const totalSteps = document.getElementById('total-steps');
+    var container = document.getElementById('multi-steps-container');
+    if (!container) return;
+    container.innerHTML = '';
+    for (let i = 1; i <= laundryCount; i++) {
+      let step = createLaundryStep(i);
+      container.appendChild(step);
+    }
+    totalSteps.textContent = laundryCount + 1;
+    var finalStep = createFinalStep();
+    container.appendChild(finalStep);
+    var steps = container.querySelectorAll('.multi-step-container');
+    steps.forEach((step, idx) => {
+      step.style.display = idx === 0 ? 'block' : 'none';
+      step.classList.add('fade-in');
+    });
+  }
+
+  /* ── GÉNÉRATION ÉTAPE LAVERIE (Q1-Q4) ── */
+  function createLaundryStep(laundryNum) {
+    var step = document.createElement('div');
+    step.className = 'multi-step-container';
+    step.dataset.step = 'laundry-' + laundryNum;
+    var prefix = 'l' + laundryNum + '_';
+    step.innerHTML = `
+    <!-- Section 1 : Localisation -->
+    <div class="section">
+        <div class="section-label"><div class="section-num">1</div><span class="section-title">Localisation</span></div>
+        <div class="grid-2">
+          <div class="field"><label>Département<span class="text-red-required"> *</span></label>
+            <div class="sel-wrap">
+              <select name="${prefix}dept" id="${prefix}dept" required aria-required="true">
+                <option value="" disabled selected>— Département —</option>
+                ${DEPT_OPT_JS.replace(/<option value=""/, '<option value="" disabled')}
+              </select>
+              <span class="invalid-message">Veuillez sélectionner un département.</span></div></div>
+          <div class="field"><label>Région <span class="opt">remplie automatiquement</span></label>
+            <div class="region-display" id="${prefix}region">—</div>
+            <input type="hidden" name="${prefix}region" id="${prefix}region-val"></div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label>Type de zone<span class="text-red-required"> *</span></label>
+            <div class="sel-wrap"><select name="${prefix}zone" required aria-required="true"><option value="" disabled selected>—</option><option value="centre_dense">Centre-ville dense</option><option value="periurbain">Périurbain / banlieue</option><option value="zone_comm">Zone commerciale</option><option value="residentiel">Quartier résidentiel</option><option value="rural">Zone rurale</option><option value="autre">Autre</option></select><span class="invalid-message">Veuillez sélectionner un type de zone.</span></div></div>
+          <div class="field"><label>Surface<span class="text-red-required"> *</span><span class="opt">(m², approx.)</span></label>
+            <input type="number" name="${prefix}surface" min="10" max="500" placeholder="ex. 80" required aria-required="true"><span class="invalid-message">Veuillez indiquer une surface.</span></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <!-- Section 2 : Parc machines & tarifs -->
+      <div class="section">
+        <div class="section-label"><div class="section-num">2</div><span class="section-title">Parc machines &amp; tarifs pratiqués</span></div>
+        <!-- Laveuses -->
+        <div class="machine-block washer">
+          <div class="machine-block-title">Laveuses — nombre et tarif par cycle</div>
+          <div class="machine-block-sub">Indiquez le nombre de machines et le tarif TTC par cycle pour chaque capacité</div>
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:8px;"><div style="font-size:12px;font-weight:600;color:#6b5a3e;">Capacité</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">Nb</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">€ / cycle</div></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">5-6 kg</div><input class="machine-nb" type="number" name="${prefix}nb_m5" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="${prefix}tarif_m5" min="0" max="20" step="0.5" placeholder="ex. 4.50" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">7-8 kg</div><input class="machine-nb" type="number" name="${prefix}nb_m7" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="${prefix}tarif_m7" min="0" max="20" step="0.5" placeholder="ex. 5.00" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">9-10 kg</div><input class="machine-nb" type="number" name="${prefix}nb_m10" min="0" max="30" placeholder="0" style="text-align:center;"><input class="price" type="number" name="t${prefix}arif_m10" min="0" max="25" step="0.5" placeholder="ex. 7.50" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">12-14 kg</div><input class="machine-nb" type="number" name="${prefix}nb_m14" min="0" max="20" placeholder="0" style="text-align:center;"><input class="price" type="number" name="${prefix}tarif_m14" min="0" max="30" step="0.5" placeholder="ex. 9.00" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">16-20 kg</div><input class="machine-nb" type="number" name="${prefix}nb_m16" min="0" max="20" placeholder="0" style="text-align:center;"><input class="price" type="number" name="${prefix}tarif_m16" min="0" max="35" step="0.5" placeholder="ex. 10.00" style="text-align:center;"></div>
+          <span class="invalid-message" id="${prefix}washer-error">Veuillez remplir au moins une capacité de laveuse (nombre + tarif).</span>
+        </div>
+        <!-- Séchoirs -->
+        <div class="machine-block">
+          <div class="machine-block-title">Séchoirs</div>
+          <div class="machine-block-sub">Durée et tarif d'un cycle par capacité.<br>Indiquez la durée et le prix d'un cycle tel qu'affiché sur votre séchoir. Laissez un groupe vide si vous ne possédez pas cette taille de séchoir.</div>
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:8px;"><div style="font-size:12px;font-weight:600;color:#6b5a3e;">Capacité</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">Durée d'un cycle (minutes)</div><div style="font-size:12px;font-weight:600;color:#6b5a3e;text-align:center;">€ / cycle</div></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">Petit séchoir (7 à 10 kg)</div><input class="minutes-cycle" type="number" name="${prefix}minutes_petit_sechoir" min="0" max="30" placeholder="ex. 8" style="text-align:center;"><input class="price" type="number" name="${prefix}tarif_petit_sechoir" min="0" max="20" step="0.5" placeholder="ex. 1.50" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">Séchoir standard (11 à 14 kg)</div><input class="minutes-cycle" type="number" name="${prefix}minutes_std_sechoir" min="0" max="30" placeholder="ex. 8" style="text-align:center;"><input class="price" type="number" name="${prefix}tarif_std_sechoir" min="0" max="20" step="0.5" placeholder="ex. 1.50" style="text-align:center;"></div>
+          <div class="machine-capacity" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:6px;"><div style="font-size:13.5px;font-weight:500;color:var(--blue);">Grand séchoir (16 à 20 kg)</div><input class="minutes-cycle" type="number" name="${prefix}minutes_grand_sechoir" min="0" max="30" placeholder="ex. 8" style="text-align:center;"><input class="price" type="number" name="${prefix}tarif_grand_sechoir" min="0" max="25" step="0.5" placeholder="ex. 1.50" style="text-align:center;"></div>
+        </div>
+        <div class="field"><label>Ancienneté du parc principal</label>
+          <div class="sel-wrap"><select name="${prefix}anc_parc"><option value="">—</option><option>Moins de 3 ans</option><option>3 à 7 ans</option><option>7 à 12 ans</option><option>Plus de 12 ans</option></select></div></div>
+      </div>
+      <div class="divider"></div>
+      <!-- Section 3 : Activité -->
+      <div class="section">
+        <div class="section-label"><div class="section-num">3</div><span class="section-title">Activité</span></div>
+        <div class="grid-2">
+          <div class="field"><label>Cycles moyens / machine / jour <span class="opt">toutes capacités</span></label>
+            <input type="number" name="${prefix}cycles_global" min="0" max="30" step="0.5" placeholder="ex. 4">
+            <p class="hint">Estimation sur un mois courant, hors vacances si atypique.</p></div>
+          <div class="field"><label>Amplitude horaire d'ouverture<span class="text-red-required"> *</span></label>
+            <div class="sel-wrap"><select name="${prefix}amplitude" required aria-required="true"><option value="">—</option><option>Moins de 12h / jour</option><option>12h à 16h / jour</option><option>16h à 20h / jour</option><option>24h / 24</option></select><span class="invalid-message">Veuillez indiquer une amplitude horaire.</span></div></div>
+        </div>
+        <div class="field"><label>Répartition de l'activité</label>
+          <div class="radio-cards c3">
+            <div class="rc"><input type="radio" name="${prefix}rep" id="${prefix}r1" value="semaine"><label for="${prefix}r1">Semaine dominante</label></div>
+            <div class="rc"><input type="radio" name="${prefix}rep" id="${prefix}r2" value="equilibre"><label for="${prefix}r2">Équilibré</label></div>
+            <div class="rc"><input type="radio" name="${prefix}rep" id="${prefix}r3" value="weekend"><label for="${prefix}r3">Week-end dominant</label></div>
+          </div></div>
+        <div class="field"><label>Taux d'immobilisation moyen — ensemble du parc (12 derniers mois)</label>
+          <p class="hint" style="margin-bottom:8px;">Proportion du temps où au moins une machine est indisponible pour panne ou maintenance. La moyenne nationale observée se situe entre 10 et 20 %.</p>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="${prefix}immo" id="${prefix}i1" value="lt5"><label for="${prefix}i1">Moins de 5 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}immo" id="${prefix}i2" value="5-10"><label for="${prefix}i2">5 à 10 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}immo" id="${prefix}i3" value="10-20"><label for="${prefix}i3">10 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}immo" id="${prefix}i4" value="gt20"><label for="${prefix}i4">Plus de 20 %</label></div>
+          </div></div>
+        <div class="field"><label>Taux d'occupation de vos laveuses</label>
+          <p class="hint" style="margin-bottom:8px;">Basé sur un cycle moyen de 40 min. Exemple : pour 15 h d'ouverture (900 min), le maximum théorique est de 22,5 cycles / machine / jour.</p>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="${prefix}occupation" id="${prefix}o1" value="lt10"><label for="${prefix}o1">Moins de 10 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}occupation" id="${prefix}o2" value="10-15"><label for="${prefix}o2">10 à 15 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}occupation" id="${prefix}o3" value="15-20"><label for="${prefix}o3">15 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}occupation" id="${prefix}o4" value="gt20"><label for="${prefix}o4">Plus de 20 %</label></div>
+          </div></div>
+        <div class="field"><label>Part du CA générée par les séchoirs (estimation)</label>
+          <p class="hint" style="margin-bottom:8px;">CA séchoirs / CA total de la laverie.</p>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="${prefix}ca" id="${prefix}ca1" value="lt10"><label for="${prefix}ca1">Moins de 10 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}ca" id="${prefix}ca2" value="10-20"><label for="${prefix}ca2">10 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}ca" id="${prefix}ca3" value="20-30"><label for="${prefix}ca3">20 à 30 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}ca" id="${prefix}ca4" value="gt30"><label for="${prefix}ca4">Plus de 30 %</label></div>
+          </div></div>
+        <div class="field"><label>Part de l'électricité dans le CA (estimation)</label>
+          <p class="hint" style="margin-bottom:8px;">Coût électricité / CA total de la laverie.</p>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="${prefix}elec" id="${prefix}cae1" value="lt10"><label for="${prefix}cae1">Moins de 10 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}elec" id="${prefix}cae2" value="10-15"><label for="${prefix}cae2">10 à 15 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}elec" id="${prefix}cae3" value="15-20"><label for="${prefix}cae3">15 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}elec" id="${prefix}cae4" value="gt20"><label for="${prefix}cae4">Plus de 20 %</label></div>
+          </div></div>
+        <div class="field"><label>Part de l'eau dans le CA (estimation)</label>
+          <p class="hint" style="margin-bottom:8px;">Coût eau / CA total de la laverie.</p>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="${prefix}eau" id="${prefix}eau1" value="lt10"><label for="${prefix}eau1">Moins de 10 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}eau" id="${prefix}eau2" value="10-15"><label for="${prefix}eau2">10 à 15 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}eau" id="${prefix}eau3" value="15-20"><label for="${prefix}eau3">15 à 20 %</label></div>
+            <div class="rc"><input type="radio" name="${prefix}eau" id="${prefix}eau4" value="gt20"><label for="${prefix}eau4">Plus de 20 %</label></div>
+          </div></div>
+      </div>
+      <div class="divider"></div>
+      <!-- Section 4 : Exploitation -->
+      <div class="section">
+        <div class="section-label"><div class="section-num">4</div><span class="section-title">Exploitation</span></div>
+        <div class="grid-2">
+          <div class="field"><label>Présence humaine</label>
+            <div class="sel-wrap"><select name="${prefix}presence"><option value="">—</option><option>Gardien permanent</option><option>Passage régulier</option><option>Télésurveillance uniquement</option><option>Sans surveillance</option></select></div></div>
+          <div class="field"><label>Mode de paiement principal</label>
+            <div class="sel-wrap"><select name="${prefix}paiement"><option value="">—</option><option>Pièces uniquement</option><option>CB / sans contact</option><option>Application mobile</option><option>Mixte pièces + CB</option><option>Mixte pièces + application</option></select></div></div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label>Alimentation eau chaude</label>
+            <div class="sel-wrap"><select name="${prefix}eau-chaude"><option value="">—</option><option>Réseau (sans résistances)</option><option>Résistances électriques</option><option>Mixte</option></select></div></div>
+          <div class="field"><label>Système de gestion à distance</label>
+            <div class="sel-wrap"><select name="${prefix}telemetrie"><option value="">—</option><option>Oui, connecté</option><option>Non</option><option>En cours d'installation</option></select></div></div>
+        </div>
+        <div class="field"><label>Distributeur lessive / adoucissant en salle</label>
+          <div class="radio-cards c3">
+            <div class="rc"><input type="radio" name="${prefix}distrib" id="${prefix}d1" value="les_adou"><label for="${prefix}d1">Lessive + adoucissant</label></div>
+            <div class="rc"><input type="radio" name="${prefix}distrib" id="${prefix}d2" value="les_seul"><label for="${prefix}d2">Lessive uniquement</label></div>
+            <div class="rc"><input type="radio" name="${prefix}distrib" id="${prefix}d3" value="aucun"><label for="${prefix}d3">Aucun</label></div>
+          </div></div>
+        <div class="field"><label>Type de lessive</label>
+          <div class="radio-cards c2">
+            <div class="rc"><input type="radio" name="${prefix}lessive" id="${prefix}l1" value="less_inject"><label for="${prefix}l1">Lessive injectée</label></div>
+            <div class="rc"><input type="radio" name="${prefix}lessive" id="${prefix}l2" value="less_dose"><label for="${prefix}l2">Dose de lessive</label></div>
+          </div></div>
+    `;
+    setTimeout(() => {
+      var deptSel = step.querySelector('[name="' + prefix + 'dept"]');
+      if (deptSel) {
+        deptSel.addEventListener('change', () => {
+          autofillRegion(prefix + 'dept', prefix + 'region');
+        });
+      }
+      step.querySelectorAll('.machine-capacity').forEach((capacity) => {
+        const nbOrMinutes = capacity.querySelector('.machine-nb, .minutes-cycle');
+        const price = capacity.querySelector('.price');
+        if (nbOrMinutes && price) {
+          const updateRequired = () => {
+          const hasNbValue = nbOrMinutes.value !== '' && nbOrMinutes.value !== '0';
+          const hasPriceValue = price.value !== '' && price.value !== '0';
+          nbOrMinutes.required = hasPriceValue;
+          price.required = hasNbValue;
+        };
+        nbOrMinutes.addEventListener('input', updateRequired);
+        price.addEventListener('input', updateRequired);
+        }
+      });
+      }, 100);
+    return step;
+  }
+
+  /* ── ÉTAPE FINALE (Q5 + RGPD) ── */
+  function createFinalStep() {
+    const step = document.createElement('div');
+    step.className = 'multi-step-container';
+    step.dataset.step = 'final';
+  
+    step.innerHTML = `
+    <!-- Section 5 : Ce qui vous serait utile -->
+    <div class="section">
+      <div class="section-label"><div class="section-num">5</div><span class="section-title">Ce qui vous serait utile</span></div>
+      <div class="check-list">
+        <label><input type="checkbox" name="interet" value="cycles"> Cycles / machine / jour par zone géographique</label>
+        <label><input type="checkbox" name="interet" value="tarifs"> Fourchettes tarifaires par capacité et par région</label>
+        <label><input type="checkbox" name="interet" value="pannes"> Taux de panne par marque / modèle</label>
+        <label><input type="checkbox" name="interet" value="parc"> Composition type d'un parc selon la surface</label>
+        <label><input type="checkbox" name="interet" value="energie"> Consommation énergétique comparée</label>
+        <label><input type="checkbox" name="interet" value="paiement"> Évolution des modes de paiement</label>
+      </div>
+      <div class="section-label" style="margin-top:20px;"><div class="section-num">6</div><span class="section-title">Votre ancienneté dans le métier</span></div>
+      <div class="radio-cards c2">
+        <div class="rc"><input type="radio" name="anc_met" id="multi-a1" value="lt3"><label for="multi-a1">Moins de 3 ans</label></div>
+        <div class="rc"><input type="radio" name="anc_met" id="multi-a2" value="3-10"><label for="multi-a2">3 à 10 ans</label></div>
+        <div class="rc"><input type="radio" name="anc_met" id="multi-a3" value="10-20"><label for="multi-a3">10 à 20 ans</label></div>
+        <div class="rc"><input type="radio" name="anc_met" id="multi-a4" value="gt20"><label for="multi-a4">Plus de 20 ans</label></div>
+      </div></div>
+    </div>
+    <div class="submit-area">
+      <div id="consent-error-multi" style="color:#d32f2f;margin:8px 0px;font-size:14px;">
+        ⚠️ Veuillez cocher cette case pour soumettre le formulaire
+      </div>
+      <p class="submit-note">
+        <label style="display:flex;align-items:center;gap:8px;justify-content:center;">
+          <input type="checkbox" id="consent-multi">
+          Je consens au traitement de mes données conformément au RGPD
+        </label>
+        Réponses transmises anonymement — Résultats publiés dans la newsletter AFL.
+      </p>
+      <div class="error-msg" id="error-multi">Une erreur est survenue. Veuillez réessayer ou écrire à afl.laveries@gmail.com</div>
+    </div>
+    `;
+    setTimeout(() => {
+      const consentMulti = document.getElementById('consent-multi');
+      const submitMulti = document.getElementById('submit-multi');
+      if (consentMulti && submitMulti) {
+        consentMulti.addEventListener('change', () => {
+          submitMulti.disabled = !consentMulti.checked;
+          document.getElementById('consent-error-multi').style.display = consentMulti.checked ? 'none' : 'block';
+        });
+      }
+    }, 100);
+    return step;
+  }
+
+  /* ── NAVIGATION ENTRE ÉTAPES ── */
+  function nextStep() {
+    if (validateCurrentStep()) {
+      currentStep++;
+      showStep(currentStep);
+      updateStepNavigation();
+      updateStepIndicator();
+      document.getElementById('screen-multi').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+  function prevStep() {
+    if (currentStep > 0) {
+      currentStep--;
+      showStep(currentStep);
+      updateStepNavigation();
+      updateStepIndicator();
+      document.getElementById('screen-multi').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }  else {
+      // Retour à l'écran de sélection multi-sites
+      goTo('screen-multi-select');
+    }
+  }
+  function showStep(stepIndex) {
+    const container = document.getElementById('multi-steps-container');
+    if (!container) return;
+    const steps = container.querySelectorAll('.multi-step-container');
+    steps.forEach((step, idx) => {
+      step.style.display = idx === stepIndex ? 'block' : 'none';
+      if (idx === stepIndex) step.classList.add('fade-in');
+    });
+    updateStepHeader(stepIndex);
+  }
+  function updateStepHeader(stepIndex) {
+    const totalSteps = document.querySelectorAll('#multi-steps-container .multi-step-container').length;
+    const stepTitle = document.getElementById('multi-step-title');
+    const currentLaundryEl = document.getElementById('current-laundry');
+    const currentStepEl = document.getElementById('current-step');
+    const totalStepsEl = document.getElementById('total-steps');    
+    if (currentLaundryEl && currentStepEl && totalStepsEl) {
+      if (stepIndex < laundryCount) {
+        stepTitle.style.display = 'inline-block';
+        currentLaundryEl.textContent = stepIndex + 1;
+        currentStepEl.textContent = stepIndex + 1;
+        totalStepsEl.textContent = totalSteps;        
+      } else {
+        stepTitle.style.display = 'none';
+        currentStepEl.textContent = totalSteps;        
+      }
+    }
+  }
+
+  /* ── VALIDATION ÉTAPE COURANTE ── */
+  function validateCurrentStep() {
+    var currentStepEl = document.querySelector('#multi-steps-container .multi-step-container:nth-child(' + (currentStep + 1) + ')');
+    if (!currentStepEl) return true;
+    
+    var form = currentStepEl.closest('form');
+    if (!form) return true;
+    
+    // Récupérer tous les champs required de l'étape actuelle
+    var requiredFields = currentStepEl.querySelectorAll('[required]');
+    var isValid = true;
+    
+    // Vérifier les champs required
+    requiredFields.forEach(function(field) {
+      if (!field.value || field.value === '0') {
+        isValid = false;
+        field.classList.add('is-invalid');
+      } else {
+        field.classList.remove('is-invalid');
+      }
+    });
+    
+    // Validation spécifique pour les laveuses
+    var washerBlock = currentStepEl.querySelector('.machine-block.washer');
+    if (washerBlock) {
+      var hasCompleteWasher = Array.from(washerBlock.querySelectorAll('.machine-capacity')).some(function(capacity) {
+        var nb = capacity.querySelector('.machine-nb');
+        var price = capacity.querySelector('.price');
+        return nb && price && nb.value !== '' && nb.value !== '0' && price.value !== '' && price.value !== '0';
+      });
+      
+      if (!hasCompleteWasher) {
+        isValid = false;
+        var errorEl = currentStepEl.querySelector('[id$="washer-error"]');
+        if (errorEl) errorEl.style.display = 'block';
+      } else {
+        var errorEl = currentStepEl.querySelector('[id$="washer-error"]');
+        if (errorEl) errorEl.style.display = 'none';
+      }
+    }
+    
+    // Scroll vers le premier champ invalide
+    if (!isValid) {
+      var firstInvalid = currentStepEl.querySelector('[required]:invalid, .is-invalid');
+      if (firstInvalid) {
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (washerBlock && !hasCompleteWasher) {
+        washerBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    
+    return isValid;
+  }
+
+  /* ── MISE À JOUR NAVIGATION ── */
+  function updateStepNavigation() {
+    var totalSteps = document.querySelectorAll('#multi-steps-container .multi-step-container').length;
+    var btnPrev = document.getElementById('btn-prev');
+    var btnNext = document.getElementById('btn-next');
+    var btnSubmit = document.getElementById('submit-multi');
+    
+    if (btnPrev) {
+      btnPrev.style.display = 'inline-block';
+    }
+    if (btnNext) {
+      // Désactiver "Suivant" sur la dernière étape (sauf la finale)
+      btnNext.style.display = currentStep < totalSteps - 1 ? 'inline-block' : 'none';
+    }
+    if (btnSubmit) {
+      btnSubmit.style.display = currentStep === totalSteps - 1 ? 'inline-block' : 'none';
+    }
+  }
+
+  /* ── INDICATEUR D'ÉTAPE ── */
+  function updateStepIndicator() {
+    var container = document.getElementById('step-indicator');
+    if (!container) return;
+    
+    var totalSteps = document.querySelectorAll('#multi-steps-container .multi-step-container').length;
+    container.innerHTML = '';
+    
+    for (var i = 0; i < totalSteps; i++) {
+      var dot = document.createElement('div');
+      dot.className = 'step-dot';
+      if (i < currentStep) {
+        dot.classList.add('completed');
+      } else if (i === currentStep) {
+        dot.classList.add('active');
+      }
+      container.appendChild(dot);
+    }
+  }
+
+  /* ── SOUMISSION FORMULAIRE MULTI ── */
+  function submitMultiForm(e) {
+    e.preventDefault();
+    var form = e.target;
+    
+    // Validation complète
+    if (!validateAllSteps()) {
+      return;
+    }
+    
+    // Ajouter les checkboxes multiples
+    var fd = new FormData(form);
+    var checks = form.querySelectorAll('input[type="checkbox"][name="interet"]:checked');
+    var cvals = [];
+    checks.forEach(function(c) { cvals.push(c.value); });
+    if (cvals.length) fd.append('interets', cvals.join(', '));
+    
+    // Ajouter le nombre de laveries
+    fd.append('nb_laundries', laundryCount);
+    
+    var btn = document.getElementById('submit-multi');
+    var errDiv = document.getElementById('error-multi');
+    
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours…';
+    errDiv.style.display = 'none';
+    
+    fetch(FORMSPREE_URL, {
+      method: 'POST',
+      body: fd,
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(function(r) {
+      if (r.ok) {
+        document.querySelectorAll('.screen').forEach(function(s) {
+          s.style.display = 'none';
+          s.classList.remove('active');
+        });
+        var success = document.getElementById('success');
+        if (success) success.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Réinitialiser
+        currentStep = 0;
+        laundryCount = 0;
+      } else {
+        throw new Error('Erreur ' + r.status);
+      }
+    })
+    .catch(function() {
+      btn.disabled = false;
+      btn.textContent = 'Envoyer mes réponses →';
+      errDiv.style.display = 'block';
+    });
+  }
+
+  function validateAllSteps() {
+    var form = document.getElementById('form-multi');
+    if (!form) return false;
+    
+    var steps = document.querySelectorAll('#multi-steps-container .multi-step-container');
+    var allValid = true;
+    
+    steps.forEach(function(step) {
+      // Temporairement ajouter la classe submitted pour afficher les erreurs
+      step.classList.add('submitted');
+      
+      // Vérifier les champs required
+      var requiredFields = step.querySelectorAll('[required]');
+      requiredFields.forEach(function(field) {
+        if (!field.value || field.value === '0') {
+          allValid = false;
+          field.classList.add('is-invalid');
+        }
+      });
+      
+      // Validation laveuses
+      var washerBlock = step.querySelector('.machine-block.washer');
+      if (washerBlock) {
+        var hasCompleteWasher = Array.from(washerBlock.querySelectorAll('.machine-capacity')).some(function(capacity) {
+          var nb = capacity.querySelector('.machine-nb');
+          var price = capacity.querySelector('.price');
+          return nb && price && nb.value !== '' && nb.value !== '0' && price.value !== '' && price.value !== '0';
+        });
+        if (!hasCompleteWasher) {
+          allValid = false;
+          var errorEl = step.querySelector('[id$="washer-error"]');
+          if (errorEl) errorEl.style.display = 'block';
+        }
+      }
+    });
+
+    
+    return allValid;
+  }
+
+  /* ── VALIDATION CHAMPS MACHINE ── */
+  function validateMachineFields(target) {
+    var capacity = target.closest('.machine-capacity');
+    if (!capacity) return;
+    
+    var nbOrMinutes = capacity.querySelector('.machine-nb, .minutes-cycle');
+    var price = capacity.querySelector('.price');
+    
+    if (!nbOrMinutes || !price) return;
+    
+    var hasNbValue = nbOrMinutes.value !== '' && nbOrMinutes.value !== '0';
+    var hasPriceValue = price.value !== '' && price.value !== '0';
+    
+    nbOrMinutes.required = hasPriceValue;
+    price.required = hasNbValue;
+    
+    // Retirer la classe is-invalid si valide
+    if (hasNbValue && hasPriceValue) {
+      nbOrMinutes.classList.remove('is-invalid');
+      price.classList.remove('is-invalid');
+    }
   }
 
   /* ── COLLECTE DONNÉES FORMULAIRE ── */
@@ -863,10 +1373,13 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
 
   /* ── INIT DOM ── */
   document.addEventListener('DOMContentLoaded', function() {
-
-    /* Cartes gate */
+    // Cartes gate
     document.querySelectorAll('.choice-card[data-target]').forEach(function(card) {
-      card.addEventListener('click', function() { goTo(card.getAttribute('data-target')); });
+      card.addEventListener('click', function() {
+        var target = card.getAttribute('data-target');
+        var count = card.getAttribute('data-count');
+        goTo(target, count);
+      });
     });
 
     /* Consentement RGPD - activer/désactiver bouton */
@@ -875,96 +1388,131 @@ input:focus,select:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 
     if (consentSolo && submitSolo) {
       consentSolo.addEventListener('change', function() {
         submitSolo.disabled = !this.checked;
+        document.getElementById('consent-error-solo').style.display = consentSolo.checked ? 'none' : 'block';
       });
     }
-
-    /* Boutons retour */
-    document.querySelectorAll('[data-back]').forEach(function(btn) {
-      btn.addEventListener('click', function() { goTo(btn.getAttribute('data-back')); });
-    });
-
-    /* Bouton + site */
-    var addBtn = document.getElementById('btn-add-site');
-    if (addBtn) addBtn.addEventListener('click', addSite);
-
-    /* Autofill dept solo */
-    var deptSolo = document.getElementById('dept-solo');
-    if (deptSolo) deptSolo.addEventListener('change', function() { autofillRegion('dept-solo','region-solo'); });
-
-    /* Enable required machine inputs */
-    const machineCapacities = document.querySelectorAll('.machine-capacity');
-    machineCapacities.forEach(capacity => {
-      const machineNbOrMinutesCycle = capacity.querySelector('.machine-nb, .minutes-cycle');
-      const price = capacity.querySelector('.price');
-      const hasValue = (val) => val !== '' && val !== '0';
-      const updateRequired = () => {
-        machineNbOrMinutesCycle.required = hasValue(price.value);
-        price.required = hasValue(machineNbOrMinutesCycle.value);
-      };
-      machineNbOrMinutesCycle.addEventListener('input', updateRequired);
-      price.addEventListener('input', updateRequired);
+    
+    // Cartes multi-select
+    document.querySelectorAll('#screen-multi-select .choice-card[data-target]').forEach(function(card) {
+      card.addEventListener('click', function() {
+        var target = card.getAttribute('data-target');
+        var count = card.getAttribute('data-count');
+        goTo(target, count);
+      });
     });
     
-
-    /* Progress solo */
+    // Boutons retour
+    document.querySelectorAll('[data-back]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        goTo(btn.getAttribute('data-back'));
+      });
+    });
+    
+    // Autofill dept solo
+    var deptSolo = document.getElementById('dept-solo');
+    if (deptSolo) {
+      deptSolo.addEventListener('change', function() {
+        autofillRegion('dept-solo', 'region-solo');
+      });
+    }
+    
+    // Progress solo
     document.querySelectorAll('#screen-solo input, #screen-solo select').forEach(function(f) {
       f.addEventListener('change', updateProgress);
       f.addEventListener('input', updateProgress);
     });
-
-    /* Soumissions */
-    var fSolo = document.getElementById('form-solo');
-    if (fSolo) fSolo.addEventListener('submit', function(e) {
-      const hasRequiredZero = Array.from(this.elements).some(el =>
-        el.required && el.value === '0'
-      );
-      const washerBlock = document.querySelector('.machine-block.washer');
-      const hasCompleteWasher = washerBlock && Array.from(washerBlock.querySelectorAll('.machine-capacity')).some(capacity => {
-        const nb = capacity.querySelector('.machine-nb');
+    
+    // Validation laveuses pour solo
+    const machineCapacities = document.querySelectorAll('#screen-solo .machine-capacity');
+    machineCapacities.forEach(capacity => {
+      const machineNbOrMinutesCycle = capacity.querySelector('.machine-nb, .minutes-cycle');
+      const price = capacity.querySelector('.price');
+      if (machineNbOrMinutesCycle && price) {
+        const hasValue = (val) => val !== '' && val !== '0';
+        const updateRequired = () => {
+          machineNbOrMinutesCycle.required = hasValue(price.value);
+          price.required = hasValue(machineNbOrMinutesCycle.value);
+        };
+        machineNbOrMinutesCycle.addEventListener('input', updateRequired);
+        price.addEventListener('input', updateRequired);
+      }
+    });
+    
+    // Enable required machine inputs pour les futures étapes multi
+    function setupMachineValidation(container) {
+      container.querySelectorAll('.machine-capacity').forEach(capacity => {
+        const machineNbOrMinutesCycle = capacity.querySelector('.machine-nb, .minutes-cycle');
         const price = capacity.querySelector('.price');
-        return nb && price && nb.value !== '' && nb.value !== '0' && price.value !== '' && price.value !== '0';
-      });
-      if (!this.checkValidity() || hasRequiredZero || !hasCompleteWasher) {
-        e.preventDefault();
-        this.classList.add('submitted');
-
-        if (!hasCompleteWasher) {
-          document.querySelector('#washer-error').style.display = 'block';
+        if (machineNbOrMinutesCycle && price) {
+          const hasValue = (val) => val !== '' && val !== '0';
+          const updateRequired = () => {
+            machineNbOrMinutesCycle.required = hasValue(price.value);
+            price.required = hasValue(machineNbOrMinutesCycle.value);
+          };
+          machineNbOrMinutesCycle.addEventListener('input', updateRequired);
+          price.addEventListener('input', updateRequired);
         }
-        
-        // Marquer visuellement les champs required=0
-        Array.from(this.elements).forEach(el => {
-          if (el.required && el.value === '0') {
-            el.classList.add('is-invalid');
-          }
+      });
+    }
+    
+    // Soumission solo
+    var fSolo = document.getElementById('form-solo');
+    if (fSolo) {
+      fSolo.addEventListener('submit', function(e) {
+        const washerBlock = document.querySelector('#screen-solo .machine-block.washer');
+        const hasCompleteWasher = washerBlock && Array.from(washerBlock.querySelectorAll('.machine-capacity')).some(capacity => {
+          const nb = capacity.querySelector('.machine-nb');
+          const price = capacity.querySelector('.price');
+          return nb && price && nb.value !== '' && nb.value !== '0' && price.value !== '' && price.value !== '0';
         });
         
-        // Scroll vers le premier champ invalide (natif ou marqué)
-        const firstInvalid = this.querySelector(':invalid, .is-invalid');
-        if (firstInvalid) {
-          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (!this.checkValidity() || !hasCompleteWasher) {
+          e.preventDefault();
+          this.classList.add('submitted');
+          
+          if (!hasCompleteWasher) {
+            document.querySelector('#screen-solo #washer-error').style.display = 'block';
+          }
+          
+          // Marquer les champs required=0
+          Array.from(this.elements).forEach(el => {
+            if (el.required && el.value === '0') {
+              el.classList.add('is-invalid');
+            }
+          });
+          
+          // Scroll vers premier invalide ou bloc washer
+          const firstInvalid = this.querySelector(':invalid, .is-invalid');
+          if (firstInvalid) {
+            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else if (!hasCompleteWasher) {
+            const washerBlock = document.querySelector('#screen-solo .machine-block.washer');
+            if (washerBlock) washerBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          return;
         }
-        
-        return;
-      }
-      e.preventDefault();
-      sendWithFormspree(fSolo, 'submit-solo', 'error-solo');
+        e.preventDefault();
+        sendWithFormspree(fSolo, 'submit-solo', 'error-solo');
+      });
+    }
+
+    const invalidFormFields = document.querySelectorAll('#form-solo, #form-multi');
+    invalidFormFields.forEach(form => {
+      form?.addEventListener('input', (e) => {
+        if (e.target.required && e.target.classList.contains('is-invalid') && e.target.value !== '0') {
+          e.target.classList.remove('is-invalid');
+        }
+      }, true);
     });
-
-    // Retirer la classe is-invalid quand l'utilisateur modifie un champ
-    document.getElementById('form-solo')?.addEventListener('input', function(e) {
-      if (e.target.required && e.target.classList.contains('is-invalid') && e.target.value !== '0') {
-        e.target.classList.remove('is-invalid');
-      }
-    }, true);
-
+    
+    
+    // Soumission multi
     var fMulti = document.getElementById('form-multi');
-    if (fMulti) fMulti.addEventListener('submit', function(e) {
-      e.preventDefault();
-      sendWithFormspree(fMulti, 'submit-multi', 'error-multi');
-    });
-
-    /* INIT : afficher gate */
+    if (fMulti) {
+      fMulti.addEventListener('submit', submitMultiForm);
+    }
+    
+    // INIT : afficher gate
     document.querySelectorAll('.screen').forEach(function(s) {
       s.style.display = 'none';
       s.classList.remove('active');
